@@ -1,0 +1,13 @@
+# DESCRIPTION: Verilator output: Timestamp data for --skip-identical.  Delete at will.
+C "counter.v --exe testbench.cpp --cc"
+S   7892640  2362596  1676904966   522004245  1598506306           0 "/usr/bin/verilator_bin"
+S       178 23607444  1677000549   702498066  1677000549   702498066 "counter.v"
+T      4166 23607479  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter.cpp"
+T      2649 23607477  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter.h"
+T      1774 23607481  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter.mk"
+T      1731 23607478  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter__Slow.cpp"
+T       549 23607475  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter__Syms.cpp"
+T       795 23607476  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter__Syms.h"
+T       251 23607482  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter__ver.d"
+T         0        0  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter__verFiles.dat"
+T      1554 23607480  1677140958   207349323  1677140958   207349323 "obj_dir/Vcounter_classes.mk"
