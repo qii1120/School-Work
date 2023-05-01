@@ -1,48 +1,43 @@
 #include "myhdr.h"
 
-int main(int argc, char *argv[])
+void shell(List *numberPipe, int sockfd)
 {
-    setenv("PATH" , "bin:.:/bin" , 1);
-    List *numberPipe = initList();
-
-    while (1)
+    char *str = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+    char *buff = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+    char *path = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+    char *value = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+    char **arg;
+    int n;
+    again:
+    writen(sockfd, "% ", 2);
+	if( (n = read(sockfd, buff, BUFFER_SIZE)) > 0)
     {
-        setbuf(stdout, NULL); // disable buffering of stdout
-        printf("%% ");
+        buff[n-2]='\0';
+        n=n-2;
+        if (n == 0)
+            goto again ;// if enter
 
-        char *str = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-        char *buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-        char *path = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-        char *value = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-        char **arg;
-        size_t buffer_size = BUFFER_SIZE;
-        int bytes_read = getline(&str, &buffer_size, stdin);
-        str[bytes_read - 1] = '\0';
-        bytes_read--;
+        if ((sscanf(buff, "%s", str) == 1) && (strcmp(str, "quit") == 0))
+            return ;
 
-        if(bytes_read==0) continue; // if enter
-
-        if (strcmp(str, "quit") == 0)
-            exit(EXIT_SUCCESS);
-
-        // printenv
-        if ((sscanf(str, "%s %s", buf, path) == 2) && (strcmp(buf, "printenv") == 0))
+        //printenv
+        if ((sscanf(buff, "%s %s", str, path) == 2) && (strcmp(str, "printenv") == 0))
         {
-            printEnv(path);
+            printEnv(path, sockfd);
             deductCount(numberPipe);
-            continue;
+            goto again;
         }
-        // setenv
-        if ((sscanf(str, "%s %s %s", buf, path, value) == 3) && (strcmp(buf, "setenv") == 0))
+        //setenv
+        if ((sscanf(buff, "%s %s %s", str, path, value) == 3) && (strcmp(str, "setenv") == 0))
         {
-            setEnv(path, value);
+            setEnv(path, value, sockfd);
             deductCount(numberPipe);
-            continue;
+            goto again;
         }
-
         PipeList pipe_list;
-        pipe_list = getPipe(str);
-        if(pipe_list.count ==0) continue;
+        pipe_list = getPipe(buff);
+        if (pipe_list.count == 0)
+            goto again;
 
         int pipes[pipe_list.count][2];
         for (int i = 0; i < pipe_list.count; i++)
@@ -52,7 +47,7 @@ int main(int argc, char *argv[])
         // if the command line has number pipe
         int temp;
         Node *n;
-        if (sscanf(str, "%*s |%d", &temp) == 1)
+        if (sscanf(buff, "%*s |%d", &temp) == 1)
         {
             n = addNode(numberPipe, temp);
         }
@@ -65,12 +60,14 @@ int main(int argc, char *argv[])
                 perror("fork");
             case 0:
                 arg = getArgu(pipe_list.arg[i]);
+                dup2(sockfd, STDOUT_FILENO);
+                dup2(sockfd, STDERR_FILENO);
                 if (i != pipe_list.count - 1)
                 {
                     if (dup2(pipes[i][1], STDOUT_FILENO) < 0)
                         perror("dup2");
                 }
-                else if ((i == pipe_list.count - 1) && (sscanf(str, "%*s |%d", &temp) == 1))
+                else if ((i == pipe_list.count - 1) && (sscanf(buff, "%*s |%d", &temp) == 1))
                 {
                     if (dup2(n->pipe[1], STDOUT_FILENO) < 0)
                         perror("dup2");
@@ -86,20 +83,20 @@ int main(int argc, char *argv[])
                     dup2(pipes[i - 1][0], STDIN_FILENO);
                 }
 
-                buf = pipe_list.pipeCommands[i];
+                str = pipe_list.pipeCommands[i];
                 for (int i = 0; i < pipe_list.count; i++)
                 {
                     close(pipes[i][0]);
                     close(pipes[i][1]);
                 }
-                int st = execvp(buf, arg);
+                close(sockfd);
+                int st = execvp(str, arg);
                 if (st == -1)
                 {
                     perror("execvp");
                     exit(EXIT_FAILURE);
                 }
             default:
-                
                 break;
             }
         for (int i = 0; i < pipe_list.count; i++)
@@ -125,7 +122,12 @@ int main(int argc, char *argv[])
             }
         }
         deductCount(numberPipe);
+        goto again;
+		// writen(sockfd, buff, n);
     }
-
-    return 0;
+	
+	if (n<0 && errno == EINTR)
+		goto again;
+	else if (n<0)
+		perror("read error");
 }

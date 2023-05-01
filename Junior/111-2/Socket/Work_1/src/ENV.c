@@ -46,7 +46,6 @@ DoubleListNode *addDoubleListNode(DoubleList *list, char *name)
 
 void printEnv(char *name)
 {
-    
     char *buf;
     buf = getenv(name);
     if (!buf)
