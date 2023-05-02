@@ -63,11 +63,16 @@ class Vtest_top_test_top final : public VerilatedModule {
         CData/*0:0*/ __PVT__exe0__DOT__div_req_o;
         CData/*0:0*/ __PVT__exe0__DOT__mult_ready_i;
         CData/*0:0*/ __PVT__exe0__DOT__div_ready_i;
+        CData/*0:0*/ __PVT__exe0__DOT__is_div_q_i;
+        CData/*0:0*/ __PVT__exe0__DOT__signed_adjust;
         CData/*5:0*/ __PVT__exe0__DOT__mul0__DOT__cnt;
-        CData/*0:0*/ __PVT__exe0__DOT__mul0__DOT__is_ready;
         CData/*2:0*/ __PVT__exe0__DOT__mul0__DOT__S;
         CData/*2:0*/ __PVT__exe0__DOT__mul0__DOT__S_nxt;
         CData/*0:0*/ __PVT__exe0__DOT__mul0__DOT__mul_add;
+        CData/*5:0*/ __PVT__exe0__DOT__div0__DOT__cnt;
+        CData/*2:0*/ __PVT__exe0__DOT__div0__DOT__S;
+        CData/*2:0*/ __PVT__exe0__DOT__div0__DOT__S_next;
+        CData/*0:0*/ __PVT__exe0__DOT__div0__DOT__div_sub;
         IData/*31:0*/ __PVT__pc_wire;
         IData/*31:0*/ __PVT__if_id_inst_addr_o;
         IData/*31:0*/ __PVT__if_id_inst_o;
@@ -80,24 +85,28 @@ class Vtest_top_test_top final : public VerilatedModule {
         IData/*31:0*/ __PVT__exe_mem_addr_o;
         IData/*31:0*/ __PVT__exe_mem_data_o;
         IData/*31:0*/ __PVT__exe_jump_addr_o;
+    };
+    struct {
         IData/*31:0*/ __PVT__exe_mem_reg_wdata_o;
         IData/*31:0*/ __PVT__exe_mem_mem_addr_o;
         IData/*31:0*/ __PVT__exe_mem_mem_data_o;
         IData/*31:0*/ __PVT__mem_reg_wdata_o;
         IData/*31:0*/ __PVT__mem_ram_addr_o;
-    };
-    struct {
         IData/*31:0*/ __PVT__mem_ram_data_o;
         IData/*31:0*/ __PVT__mem_wb_reg_wdata_o;
         IData/*31:0*/ __PVT__id0__DOT__op1_o_final;
         IData/*31:0*/ __PVT__id0__DOT__op2_o_final;
         IData/*31:0*/ __PVT__exe0__DOT__a_o;
         IData/*31:0*/ __PVT__exe0__DOT__b_o;
+        IData/*31:0*/ __PVT__exe0__DOT__div_result_i;
+        IData/*31:0*/ __PVT__exe0__DOT__invert_result_div;
         IData/*31:0*/ __PVT__exe0__DOT__mul0__DOT__reg32;
         VlWide<3>/*64:0*/ __PVT__exe0__DOT__mul0__DOT__result;
         VlWide<3>/*64:0*/ __PVT__exe0__DOT__mul0__DOT__result_tmp;
+        IData/*31:0*/ __PVT__exe0__DOT__div0__DOT__reg32;
+        VlWide<3>/*64:0*/ __PVT__exe0__DOT__div0__DOT__result;
+        VlWide<3>/*64:0*/ __PVT__exe0__DOT__div0__DOT__result_tmp;
         QData/*63:0*/ __PVT__exe0__DOT__mult_result_i;
-        QData/*63:0*/ __PVT__exe0__DOT__div_result_i;
         QData/*63:0*/ __PVT__exe0__DOT__invert_result;
     };
 

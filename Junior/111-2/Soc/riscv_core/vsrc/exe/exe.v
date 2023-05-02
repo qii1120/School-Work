@@ -45,9 +45,9 @@ module exe(
     wire[`ADDR_WIDTH-1:0] pc;
     assign pc = inst_addr_i;
 
-    reg[`DATA_WIDTH-1:0] a_o, b_o;
-    reg  mult_req_o, div_req_o, mult_ready_i, div_ready_i;
-    reg[`DATA_WIDTH*2-1:0] mult_result_i, div_result_i;
+    reg[`DATA_WIDTH-1:0] a_o, b_o, div_result_i;
+    reg  mult_req_o, div_req_o, mult_ready_i, div_ready_i, is_div_q_i;
+    reg[`DATA_WIDTH*2-1:0] mult_result_i;
     mul#(.XLEN(`DATA_WIDTH)) mul0(
         .clk_i(clk_i),
         .rst_i(rst_i),
@@ -57,6 +57,18 @@ module exe(
         .ready_o(mult_ready_i),
         .result_o(mult_result_i)
     );
+
+    div#(.XLEN(`DATA_WIDTH)) div0(
+        .clk_i(clk_i),
+        .rst_i(rst_i),
+        .a_i(a_o),
+        .b_i(b_o),
+        .req_i(div_req_o),
+        .is_q_i(is_div_q_i),
+        .ready_o(div_ready_i),
+        .result_o(div_result_i)
+    );
+
     assign stallreq_o = (mult_req_o & ~mult_ready_i)|(div_req_o & ~div_ready_i);
 
     wire is_a_neg = op1_i[`DATA_WIDTH-1];
@@ -64,6 +76,8 @@ module exe(
     wire signed_adjust = is_a_neg ^ is_b_neg;
     reg[`DATA_WIDTH*2-1:0] invert_result;
     assign invert_result = (mult_req_o)? ~mult_result_i+1 : 64'b0;
+    reg[`DATA_WIDTH-1:0] invert_result_div;
+    assign invert_result_div = (div_req_o)? ~div_result_i+1 : 32'b0;
 
     always @(*) begin
         if (rst_i == 1) begin
@@ -84,6 +98,8 @@ module exe(
             mem_op_o = `MEM_NOP;
             jump_enable_o = 1'b0;
             mult_req_o = 1'b0;
+            is_div_q_i = 1'b0;
+            div_req_o = 1'b0;
             case (opcode)
                 `INST_TYPE_I:begin
                     case(funct3)
@@ -223,6 +239,34 @@ module exe(
                                 b_o = op2_i;
                                 mult_req_o = 1'b1;
                                 reg_wdata_o = (is_a_neg)? invert_result[`DATA_WIDTH*2-1:`DATA_WIDTH] : mult_result_i[`DATA_WIDTH*2-1:`DATA_WIDTH];
+                            end
+                            `INST_DIV: begin
+                                a_o = (is_a_neg)? ~op1_i+1 : op1_i;
+                                b_o = (is_b_neg)? ~op2_i+1 : op2_i;
+                                div_req_o = 1'b1;
+                                is_div_q_i = 1'b1;
+                                reg_wdata_o = (signed_adjust && (op2_i != 32'b0))? invert_result_div : div_result_i;
+                            end
+                            `INST_DIVU: begin
+                                a_o = op1_i;
+                                b_o = op2_i;
+                                div_req_o = 1'b1;
+                                is_div_q_i = 1'b1;
+                                reg_wdata_o = div_result_i;
+                            end
+                            `INST_REM: begin
+                                a_o = (is_a_neg)? ~op1_i+1 : op1_i;
+                                b_o = (is_b_neg)? ~op2_i+1 : op2_i;
+                                div_req_o = 1'b1;
+                                is_div_q_i = 1'b0;
+                                reg_wdata_o = (is_a_neg)? invert_result_div : div_result_i;
+                            end
+                            `INST_REMU: begin
+                                a_o = op1_i;
+                                b_o = op2_i;
+                                div_req_o = 1'b1;
+                                is_div_q_i = 1'b0;
+                                reg_wdata_o = div_result_i;
                             end
                             default: begin
                                 reg_wdata_o = `ZERO;

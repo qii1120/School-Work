@@ -24,7 +24,6 @@ wire              is_calc_done;
 reg  [XLEN-1 : 0] reg32;
 reg  [XLEN*2 : 0] result;       // 65-bit, 1 extra bit
 reg  [ 5 : 0]     cnt;
-reg is_ready;
 
 // For the slow shift-add binary multiplier.
 assign is_calc_done = ~|cnt;
@@ -49,7 +48,7 @@ always @(*)
 begin
     case (S)
         S_IDLE:
-            S_nxt = (is_a_zero | is_b_zero)? S_DONE : (is_ready) ? S_IDLE : S_CALC;
+            S_nxt = (is_a_zero | is_b_zero)? S_DONE : (ready_o) ? S_IDLE : S_CALC;
         S_CALC:
             S_nxt = (is_calc_done)? S_DONE : S_CALC;
         S_DONE:
@@ -102,11 +101,9 @@ begin
     if (S == S_DONE) begin
         result_o <=  result[XLEN*2-1:0];
         ready_o <= 1'b1;
-        is_ready <= 1'b1;
     end else begin
         result_o <= result_o;
         ready_o <= 1'b0;
-        is_ready <= 1'b0;
     end
 end
 

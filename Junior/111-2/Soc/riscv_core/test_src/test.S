@@ -12,6 +12,10 @@ _start:
     mulh x11, x4, x3;
     mul x12, x2, x7; // - * -
     mulh x13, x2, x7;
+    div x15, x2, x3; // - / +
+    divu x16, x4, x3; // + / +
+    div x17, x4, x3; // + / +
+    div x18, x2, x7; // - / -
     li x14, 5;
     li x5, 1; 
     lui x6, 0x200; 
