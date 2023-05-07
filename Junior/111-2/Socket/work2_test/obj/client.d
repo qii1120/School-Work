@@ -1,4 +1,4 @@
-obj/ENV.o: src/ENV.c /usr/include/stdc-predef.h include/myhdr.h \
+obj/client.o: src/client.c /usr/include/stdc-predef.h include/myhdr.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \

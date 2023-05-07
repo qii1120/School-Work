@@ -9,18 +9,7 @@ void shell(List *numberPipe, Client *client)
     char *id = (char *)malloc(sizeof(char) * BUFFER_SIZE);
     char **arg;
     int n;
-    int epfd = epoll_create(BACKLOG);
-    if(epfd < 0)
-    {
-        perror("epoll_create error");
-        return ;
-    }
-    char temp[BUFFER_SIZE]="server_";
     sprintf(id, "%d", client->id);
-    strcat(temp, id);
-    // struct epoll_event event[2];
-    // add_event(epfd, client->socketfd);
-    // add_event(epfd, temp);
     again:
     writen(client->socketfd, "% ", 2);
 	if( (n = read(client->socketfd, buff, BUFFER_SIZE)) > 0)
@@ -32,8 +21,6 @@ void shell(List *numberPipe, Client *client)
 
         if ((sscanf(buff, "%s", str) == 1) && (strcmp(str, "quit") == 0))
         {
-            quit(client);
-            unlink(temp);
             unlink(id);
             return ;
         }
@@ -152,5 +139,5 @@ void shell(List *numberPipe, Client *client)
 	if (n<0 && errno == EINTR)
 		goto again;
 	else if (n<0)
-		return ;
+		perror("read error");
 }

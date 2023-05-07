@@ -106,7 +106,3 @@ Client *addClient(Client_List *list, Client *client);
 void removeClient(Client_List *list, Client *client);
 void client(char *buff, Client *client);
 void who(char *buff, Client *client);
-void write_who(int id, Client *client);
-void quit(Client *client);
-void name(char *buff, Client *client);
-void yell(char *buff, Client *client);
