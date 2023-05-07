@@ -51,6 +51,17 @@
 `define INST_OR     3'b110
 `define INST_AND    3'b111
 `define INST_SRA    7'b0100000
+// M type inst
+`define INST_MUL 3'b000
+`define INST_MULH 3'b001
+`define INST_MULHSU 3'b010
+`define INST_MULHU 3'b011
+`define INST_DIV 3'b100
+`define INST_DIVU 3'b101
+`define INST_REM 3'b110
+`define INST_REMU 3'b111
+
+
 
 // U type instruction
 `define INST_TYPE_LUI 7'b0110111

@@ -25,9 +25,11 @@ module id_type_r(
 
     wire isType_r;
     assign isType_r = (opcode == `INST_TYPE_R_M) && ((funct7 == 7'b0000000)||(funct7==7'b0100000));
+    wire isType_m;
+    assign isType_m = (opcode == `INST_TYPE_R_M) && (funct7 == 7'b0000001);
 
     always @(*) begin
-        if (isType_r == 1) begin
+        if (isType_r == 1 | isType_m == 1) begin
             reg_we_o = `WRITE_ENABLE;
             reg_waddr_o = rd;
             reg1_raddr_o = rs1;

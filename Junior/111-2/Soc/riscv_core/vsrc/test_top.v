@@ -255,7 +255,7 @@ id_exe id_exe0(
 //EXE
 exe exe0(
     .rst_i(rst_i),
-
+    .clk_i(clk_i),
     //from id_exe
     .op1_i(id_exe_op1_o),
     .op2_i(id_exe_op2_o),
