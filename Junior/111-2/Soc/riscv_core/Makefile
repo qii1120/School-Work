@@ -2,16 +2,19 @@ TOP = test_top
 GTKWAVE = gtkwave
 
 V_SRC = $(wildcard ./vsrc/*.v)
-V_SRC += $(wildcard ./vsrc/exe/*.v)
-V_SRC += $(wildcard ./vsrc/id/*.v)
-V_SRC += $(wildcard ./vsrc/if/*.v)
-V_SRC += $(wildcard ./vsrc/mem/*.v)
-V_SRC += $(wildcard ./vsrc/wb/*.v)
-V_SRC += $(wildcard ./vsrc/stall/*.v)
+V_SRC += $(wildcard ./vsrc/soc/*.v)
+V_SRC += $(wildcard ./vsrc/device/*.v)
+V_SRC += $(wildcard ./vsrc/core/*.v)
+V_SRC += $(wildcard ./vsrc/core/exe/*.v)
+V_SRC += $(wildcard ./vsrc/core/id/*.v)
+V_SRC += $(wildcard ./vsrc/core/if/*.v)
+V_SRC += $(wildcard ./vsrc/core/mem/*.v)
+V_SRC += $(wildcard ./vsrc/core/wb/*.v)
+V_SRC += $(wildcard ./vsrc/core/stall/*.v)
 
 TESTBENCH_SRC = $(wildcard ./tb/*.cpp)
-VTOP = ./vsrc/${TOP}.v
-INC = -Ivsrc/include
+VTOP = ./vsrc/soc/${TOP}.v
+INC = -Ivsrc/core/include
 PROG = test
 PROG_S = $(wildcard ./test_src/*.S)
 

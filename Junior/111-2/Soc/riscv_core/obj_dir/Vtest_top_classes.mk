@@ -27,10 +27,11 @@ VM_CLASSES_FAST += \
 	Vtest_top___024root__DepSet_h23aaccb8__0 \
 	Vtest_top___024root__DepSet_h76c3b2a4__0 \
 	Vtest_top_test_top__DepSet_h43df7e51__0 \
-	Vtest_top_regfile__DepSet_h717a3bd1__0 \
-	Vtest_top_regfile__DepSet_h2873dd4b__0 \
+	Vtest_top_core_top__DepSet_h0a0c36c8__0 \
 	Vtest_top_dpram__R200000_RB15__DepSet_h5d83a859__0 \
 	Vtest_top_dpram__R200000_RB15__DepSet_h3cac4dc3__0 \
+	Vtest_top_regfile__DepSet_h717a3bd1__0 \
+	Vtest_top_regfile__DepSet_h2873dd4b__0 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
@@ -40,10 +41,13 @@ VM_CLASSES_SLOW += \
 	Vtest_top_test_top__Slow \
 	Vtest_top_test_top__DepSet_h43df7e51__0__Slow \
 	Vtest_top_test_top__DepSet_h56d91fcb__0__Slow \
-	Vtest_top_regfile__Slow \
-	Vtest_top_regfile__DepSet_h2873dd4b__0__Slow \
+	Vtest_top_core_top__Slow \
+	Vtest_top_core_top__DepSet_h0a0c36c8__0__Slow \
+	Vtest_top_core_top__DepSet_h8f25d834__0__Slow \
 	Vtest_top_dpram__R200000_RB15__Slow \
 	Vtest_top_dpram__R200000_RB15__DepSet_h3cac4dc3__0__Slow \
+	Vtest_top_regfile__Slow \
+	Vtest_top_regfile__DepSet_h2873dd4b__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

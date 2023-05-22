@@ -7,10 +7,10 @@
 
 #include "Vtest_top_regfile.h"
 
-VL_ATTR_COLD void Vtest_top_regfile___eval_initial__TOP__test_top__regfile0(Vtest_top_regfile* vlSelf) {
+VL_ATTR_COLD void Vtest_top_regfile___eval_initial__TOP__test_top__core_top0__regfile0(Vtest_top_regfile* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+        Vtest_top_regfile___eval_initial__TOP__test_top__regfile0\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+          Vtest_top_regfile___eval_initial__TOP__test_top__core_top0__regfile0\n"); );
     // Body
     vlSelf->__PVT__regs[0U] = 0U;
     vlSelf->__PVT__regs[1U] = 0U;
@@ -50,7 +50,7 @@ VL_ATTR_COLD void Vtest_top_regfile___eval_initial__TOP__test_top__regfile0(Vtes
 VL_ATTR_COLD void Vtest_top_regfile___ctor_var_reset(Vtest_top_regfile* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+        Vtest_top_regfile___ctor_var_reset\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+          Vtest_top_regfile___ctor_var_reset\n"); );
     // Body
     vlSelf->__PVT__clk_i = VL_RAND_RESET_I(1);
     vlSelf->__PVT__rst_i = VL_RAND_RESET_I(1);

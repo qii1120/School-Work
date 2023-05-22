@@ -16,8 +16,9 @@
 // INCLUDE MODULE CLASSES
 #include "Vtest_top___024root.h"
 #include "Vtest_top_test_top.h"
-#include "Vtest_top_regfile.h"
+#include "Vtest_top_core_top.h"
 #include "Vtest_top_dpram__R200000_RB15.h"
+#include "Vtest_top_regfile.h"
 
 // DPI TYPES for DPI Export callbacks (Internal use)
 
@@ -33,8 +34,9 @@ class Vtest_top__Syms final : public VerilatedSyms {
     // MODULE INSTANCE STATE
     Vtest_top___024root            TOP;
     Vtest_top_test_top             TOP__test_top;
+    Vtest_top_core_top             TOP__test_top__core_top0;
+    Vtest_top_regfile              TOP__test_top__core_top0__regfile0;
     Vtest_top_dpram__R200000_RB15  TOP__test_top__data_ram0;
-    Vtest_top_regfile              TOP__test_top__regfile0;
 
     // CONSTRUCTORS
     Vtest_top__Syms(VerilatedContext* contextp, const char* namep, Vtest_top* modelp);

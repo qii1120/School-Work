@@ -13,7 +13,7 @@ VL_ATTR_COLD void Vtest_top_dpram__R200000_RB15___ctor_var_reset(Vtest_top_dpram
     VL_DEBUG_IF(VL_DBG_MSGF("+        Vtest_top_dpram__R200000_RB15___ctor_var_reset\n"); );
     // Body
     vlSelf->__PVT__clk_i = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__rst_i = VL_RAND_RESET_I(1);
+    vlSelf->__PVT__ce_i = VL_RAND_RESET_I(1);
     vlSelf->__PVT__addr_i = VL_RAND_RESET_I(32);
     vlSelf->__PVT__we_i = VL_RAND_RESET_I(1);
     vlSelf->__PVT__data_i = VL_RAND_RESET_I(32);

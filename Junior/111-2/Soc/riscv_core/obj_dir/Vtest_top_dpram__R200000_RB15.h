@@ -14,7 +14,7 @@ class Vtest_top_dpram__R200000_RB15 final : public VerilatedModule {
 
     // DESIGN SPECIFIC STATE
     VL_IN8(__PVT__clk_i,0,0);
-    VL_IN8(__PVT__rst_i,0,0);
+    VL_IN8(__PVT__ce_i,0,0);
     VL_IN8(__PVT__we_i,0,0);
     VL_IN8(__PVT__inst_ce_i,0,0);
     VL_IN(__PVT__addr_i,31,0);
@@ -34,6 +34,7 @@ class Vtest_top_dpram__R200000_RB15 final : public VerilatedModule {
 
     // INTERNAL METHODS
     void __Vconfigure(bool first);
+    void readByte(uint32_t byte_addr, uint32_t& val);
     void writeByte(uint32_t byte_addr, uint32_t val);
 } VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
 

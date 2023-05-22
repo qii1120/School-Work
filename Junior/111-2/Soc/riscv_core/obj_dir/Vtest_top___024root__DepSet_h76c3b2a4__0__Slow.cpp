@@ -7,18 +7,6 @@
 
 #include "Vtest_top___024root.h"
 
-VL_ATTR_COLD void Vtest_top___024root___eval_static(Vtest_top___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___eval_static\n"); );
-}
-
-VL_ATTR_COLD void Vtest_top___024root___eval_final(Vtest_top___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___eval_final\n"); );
-}
-
 VL_ATTR_COLD void Vtest_top___024root___eval_triggers__stl(Vtest_top___024root* vlSelf);
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vtest_top___024root___dump_triggers__stl(Vtest_top___024root* vlSelf);
@@ -43,7 +31,7 @@ VL_ATTR_COLD void Vtest_top___024root___eval_settle(Vtest_top___024root* vlSelf)
 #ifdef VL_DEBUG
                 Vtest_top___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("vsrc/test_top.v", 3, "", "Settle region did not converge.");
+                VL_FATAL_MT("vsrc/soc/test_top.v", 3, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -117,8 +105,8 @@ VL_ATTR_COLD void Vtest_top___024root___ctor_var_reset(Vtest_top___024root* vlSe
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___ctor_var_reset\n"); );
     // Body
-    vlSelf->rst_i = VL_RAND_RESET_I(1);
     vlSelf->clk_i = VL_RAND_RESET_I(1);
+    vlSelf->rst_i = VL_RAND_RESET_I(1);
     vlSelf->halt_o = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__clk_i = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {

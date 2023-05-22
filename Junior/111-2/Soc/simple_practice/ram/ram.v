@@ -34,7 +34,7 @@ localparam MADDR_WIDTH = MEM_SIZE>1? clog2(MEM_SIZE) : 1;
             data_o = {mem[addr4],mem[addr4+1],mem[addr4+2],mem[addr4+3]};
         end//if
 
-      function integer clog2 (input integer n); begin
+    function integer clog2 (input integer n); begin
     n = n - 1;
     for (clog2 = 0; n > 0; clog2 = clog2 + 1)
       n = n >> 1;

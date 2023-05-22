@@ -10,4 +10,5 @@ sim_mem.o: ../tb/sim_mem.cpp \
   Vtest_top.h \
   /opt/homebrew/Cellar/verilator/5.006/share/verilator/include/vltstd/svdpi.h \
   Vtest_top__Syms.h Vtest_top___024root.h Vtest_top_test_top.h \
-  Vtest_top_regfile.h Vtest_top_dpram__R200000_RB15.h
+  Vtest_top_core_top.h Vtest_top_dpram__R200000_RB15.h \
+  Vtest_top_regfile.h

@@ -48,7 +48,7 @@ void Vtest_top___024root___eval(Vtest_top___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtest_top___024root___dump_triggers__ico(vlSelf);
 #endif
-                VL_FATAL_MT("vsrc/test_top.v", 3, "", "Input combinational region did not converge.");
+                VL_FATAL_MT("vsrc/soc/test_top.v", 3, "", "Input combinational region did not converge.");
             }
             vlSelf->__VicoIterCount = ((IData)(1U) 
                                        + vlSelf->__VicoIterCount);
@@ -71,7 +71,7 @@ void Vtest_top___024root___eval(Vtest_top___024root* vlSelf) {
 #ifdef VL_DEBUG
                     Vtest_top___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("vsrc/test_top.v", 3, "", "Active region did not converge.");
+                    VL_FATAL_MT("vsrc/soc/test_top.v", 3, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -86,7 +86,7 @@ void Vtest_top___024root___eval(Vtest_top___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtest_top___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("vsrc/test_top.v", 3, "", "NBA region did not converge.");
+                VL_FATAL_MT("vsrc/soc/test_top.v", 3, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             Vtest_top___024root___eval_nba(vlSelf);
@@ -100,9 +100,9 @@ void Vtest_top___024root___eval_debug_assertions(Vtest_top___024root* vlSelf) {
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___eval_debug_assertions\n"); );
     // Body
-    if (VL_UNLIKELY((vlSelf->rst_i & 0xfeU))) {
-        Verilated::overWidthError("rst_i");}
     if (VL_UNLIKELY((vlSelf->clk_i & 0xfeU))) {
         Verilated::overWidthError("clk_i");}
+    if (VL_UNLIKELY((vlSelf->rst_i & 0xfeU))) {
+        Verilated::overWidthError("rst_i");}
 }
 #endif  // VL_DEBUG

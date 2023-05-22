@@ -25,9 +25,10 @@ void Vtest_top___024root___eval_triggers__ico(Vtest_top___024root* vlSelf) {
 #endif
 }
 
+void Vtest_top_core_top___ico_sequent__TOP__test_top__core_top0__0(Vtest_top_core_top* vlSelf);
 void Vtest_top_test_top___ico_sequent__TOP__test_top__0(Vtest_top_test_top* vlSelf);
-void Vtest_top_regfile___ico_sequent__TOP__test_top__regfile0__0(Vtest_top_regfile* vlSelf);
-void Vtest_top_dpram__R200000_RB15___ico_sequent__TOP__test_top__data_ram0__0(Vtest_top_dpram__R200000_RB15* vlSelf);
+void Vtest_top_regfile___ico_sequent__TOP__test_top__core_top0__regfile0__0(Vtest_top_regfile* vlSelf);
+void Vtest_top_core_top___ico_sequent__TOP__test_top__core_top0__1(Vtest_top_core_top* vlSelf);
 void Vtest_top_test_top___ico_sequent__TOP__test_top__1(Vtest_top_test_top* vlSelf);
 
 void Vtest_top___024root___eval_ico(Vtest_top___024root* vlSelf) {
@@ -36,10 +37,11 @@ void Vtest_top___024root___eval_ico(Vtest_top___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___eval_ico\n"); );
     // Body
     if (vlSelf->__VicoTriggered.at(0U)) {
-        Vtest_top_test_top___ico_sequent__TOP__test_top__0((&vlSymsp->TOP__test_top));
+        Vtest_top_core_top___ico_sequent__TOP__test_top__core_top0__0((&vlSymsp->TOP__test_top__core_top0));
         vlSelf->__Vm_traceActivity[1U] = 1U;
-        Vtest_top_regfile___ico_sequent__TOP__test_top__regfile0__0((&vlSymsp->TOP__test_top__regfile0));
-        Vtest_top_dpram__R200000_RB15___ico_sequent__TOP__test_top__data_ram0__0((&vlSymsp->TOP__test_top__data_ram0));
+        Vtest_top_test_top___ico_sequent__TOP__test_top__0((&vlSymsp->TOP__test_top));
+        Vtest_top_regfile___ico_sequent__TOP__test_top__core_top0__regfile0__0((&vlSymsp->TOP__test_top__core_top0__regfile0));
+        Vtest_top_core_top___ico_sequent__TOP__test_top__core_top0__1((&vlSymsp->TOP__test_top__core_top0));
         Vtest_top_test_top___ico_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
     }
 }
@@ -68,14 +70,17 @@ VL_INLINE_OPT void Vtest_top___024root___nba_sequent__TOP__0(Vtest_top___024root
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___nba_sequent__TOP__0\n"); );
     // Body
-    vlSelf->halt_o = vlSymsp->TOP__test_top.__PVT__mem_halt_o;
+    vlSelf->halt_o = vlSymsp->TOP__test_top.__PVT__halt_from_console;
 }
 
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__0(Vtest_top_core_top* vlSelf);
 void Vtest_top_test_top___nba_sequent__TOP__test_top__0(Vtest_top_test_top* vlSelf);
+void Vtest_top_regfile___nba_sequent__TOP__test_top__core_top0__regfile0__0(Vtest_top_regfile* vlSelf);
 void Vtest_top_dpram__R200000_RB15___nba_sequent__TOP__test_top__data_ram0__0(Vtest_top_dpram__R200000_RB15* vlSelf);
-void Vtest_top_regfile___nba_sequent__TOP__test_top__regfile0__0(Vtest_top_regfile* vlSelf);
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__1(Vtest_top_core_top* vlSelf);
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__2(Vtest_top_core_top* vlSelf);
 void Vtest_top_test_top___nba_sequent__TOP__test_top__1(Vtest_top_test_top* vlSelf);
-void Vtest_top_test_top___nba_sequent__TOP__test_top__2(Vtest_top_test_top* vlSelf);
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__3(Vtest_top_core_top* vlSelf);
 
 void Vtest_top___024root___eval_nba(Vtest_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -83,14 +88,17 @@ void Vtest_top___024root___eval_nba(Vtest_top___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtest_top___024root___eval_nba\n"); );
     // Body
     if (vlSelf->__VnbaTriggered.at(0U)) {
-        Vtest_top_test_top___nba_sequent__TOP__test_top__0((&vlSymsp->TOP__test_top));
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__0((&vlSymsp->TOP__test_top__core_top0));
         vlSelf->__Vm_traceActivity[2U] = 1U;
+        Vtest_top_test_top___nba_sequent__TOP__test_top__0((&vlSymsp->TOP__test_top));
+        Vtest_top_regfile___nba_sequent__TOP__test_top__core_top0__regfile0__0((&vlSymsp->TOP__test_top__core_top0__regfile0));
         Vtest_top_dpram__R200000_RB15___nba_sequent__TOP__test_top__data_ram0__0((&vlSymsp->TOP__test_top__data_ram0));
-        Vtest_top_regfile___nba_sequent__TOP__test_top__regfile0__0((&vlSymsp->TOP__test_top__regfile0));
         Vtest_top___024root___nba_sequent__TOP__0(vlSelf);
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__1((&vlSymsp->TOP__test_top__core_top0));
+        Vtest_top_regfile___ico_sequent__TOP__test_top__core_top0__regfile0__0((&vlSymsp->TOP__test_top__core_top0__regfile0));
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__2((&vlSymsp->TOP__test_top__core_top0));
         Vtest_top_test_top___nba_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
-        Vtest_top_dpram__R200000_RB15___ico_sequent__TOP__test_top__data_ram0__0((&vlSymsp->TOP__test_top__data_ram0));
-        Vtest_top_regfile___ico_sequent__TOP__test_top__regfile0__0((&vlSymsp->TOP__test_top__regfile0));
-        Vtest_top_test_top___nba_sequent__TOP__test_top__2((&vlSymsp->TOP__test_top));
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__3((&vlSymsp->TOP__test_top__core_top0));
+        Vtest_top_test_top___ico_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
     }
 }

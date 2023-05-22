@@ -7,94 +7,127 @@
 
 #include "Vtest_top_test_top.h"
 
+VL_ATTR_COLD void Vtest_top_test_top___eval_static__TOP__test_top(Vtest_top_test_top* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+      Vtest_top_test_top___eval_static__TOP__test_top\n"); );
+    // Body
+    vlSelf->__PVT__console0__DOT__sim_finish = 0U;
+}
+
+VL_ATTR_COLD void Vtest_top_test_top___eval_initial__TOP__test_top(Vtest_top_test_top* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+      Vtest_top_test_top___eval_initial__TOP__test_top\n"); );
+    // Body
+    vlSelf->__PVT__cfg_device_addr_mask[0U] = 0xffe00000U;
+    vlSelf->__PVT__cfg_device_addr_mask[1U] = 0xfff00000U;
+    vlSelf->__PVT__cfg_device_addr_base[0U] = 0U;
+    vlSelf->__PVT__cfg_device_addr_base[1U] = 0x200000U;
+    vlSelf->__PVT__console0__DOT__log_fd = VL_FOPEN_NN(
+                                                       std::string{"./log/console.log"}
+                                                       , 
+                                                       std::string{"w"});
+}
+
+VL_ATTR_COLD void Vtest_top_test_top___eval_final__TOP__test_top(Vtest_top_test_top* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+      Vtest_top_test_top___eval_final__TOP__test_top\n"); );
+    // Body
+    VL_FCLOSE_I(vlSelf->__PVT__console0__DOT__log_fd); vlSelf->__PVT__console0__DOT__log_fd = 0;
+}
+
 VL_ATTR_COLD void Vtest_top_test_top___ctor_var_reset(Vtest_top_test_top* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtest_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+      Vtest_top_test_top___ctor_var_reset\n"); );
     // Body
-    vlSelf->rst_i = VL_RAND_RESET_I(1);
     vlSelf->clk_i = VL_RAND_RESET_I(1);
+    vlSelf->rst_i = VL_RAND_RESET_I(1);
     vlSelf->halt_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__ctrl_stall_o = VL_RAND_RESET_I(6);
-    vlSelf->__PVT__pc_wire = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__ce_wire = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__if_id_inst_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__if_id_inst_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id_inst_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__id_reg1_addr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__id_reg2_addr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__id_reg1_re_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id_reg2_re_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id_exe_inst_is_load_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id_exe_rd_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__id_exe_op1_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id_exe_op2_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id_exe_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id_exe_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__id_exe_inst_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id_exe_inst_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__exe_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_reg_wdata_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_data_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_mem_op_o = VL_RAND_RESET_I(4);
-    vlSelf->__PVT__exe_stallreq_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_jump_enable_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_jump_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__exe_mem_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_mem_reg_wdata_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_mem_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_mem_data_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe_mem_mem_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe_mem_mem_op_o = VL_RAND_RESET_I(4);
-    vlSelf->__PVT__mem_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__mem_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__mem_reg_wdata_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__mem_ram_addr_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__mem_ram_w_request_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__mem_ram_data_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__mem_halt_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__mem_wb_reg_waddr_o = VL_RAND_RESET_I(5);
-    vlSelf->__PVT__mem_wb_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__mem_wb_reg_wdata_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id0__DOT__op1_o_final = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id0__DOT__op2_o_final = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__id0__DOT__r_reg1_re_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id0__DOT__r_reg2_re_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__id0__DOT__r_reg_we_o = VL_RAND_RESET_I(1);
-    vlSelf->id0__DOT__inst_type_r__DOT____VdfgExtracted_he1154c64__0 = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__isType_r = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__isType_m = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__op1_eq_op2 = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__a_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe0__DOT__b_o = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe0__DOT__div_result_i = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe0__DOT__mult_req_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__div_req_o = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__mult_ready_i = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__div_ready_i = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__is_div_q_i = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__mult_result_i = VL_RAND_RESET_Q(64);
-    vlSelf->__PVT__exe0__DOT__signed_adjust = VL_RAND_RESET_I(1);
-    vlSelf->__PVT__exe0__DOT__invert_result = VL_RAND_RESET_Q(64);
-    vlSelf->__PVT__exe0__DOT__invert_result_div = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__exe0__DOT__mul0__DOT__reg32 = VL_RAND_RESET_I(32);
-    VL_RAND_RESET_W(65, vlSelf->__PVT__exe0__DOT__mul0__DOT__result);
-    vlSelf->__PVT__exe0__DOT__mul0__DOT__cnt = VL_RAND_RESET_I(6);
-    vlSelf->__PVT__exe0__DOT__mul0__DOT__S = VL_RAND_RESET_I(3);
-    vlSelf->__PVT__exe0__DOT__mul0__DOT__S_nxt = VL_RAND_RESET_I(3);
-    vlSelf->__PVT__exe0__DOT__mul0__DOT__mul_add = VL_RAND_RESET_I(1);
-    VL_RAND_RESET_W(65, vlSelf->__PVT__exe0__DOT__mul0__DOT__result_tmp);
-    vlSelf->__PVT__exe0__DOT__div0__DOT__reg32 = VL_RAND_RESET_I(32);
-    VL_RAND_RESET_W(65, vlSelf->__PVT__exe0__DOT__div0__DOT__result);
-    vlSelf->__PVT__exe0__DOT__div0__DOT__cnt = VL_RAND_RESET_I(6);
-    vlSelf->__PVT__exe0__DOT__div0__DOT__S = VL_RAND_RESET_I(3);
-    vlSelf->__PVT__exe0__DOT__div0__DOT__S_next = VL_RAND_RESET_I(3);
-    vlSelf->__PVT__exe0__DOT__div0__DOT__div_sub = VL_RAND_RESET_I(1);
-    VL_RAND_RESET_W(65, vlSelf->__PVT__exe0__DOT__div0__DOT__result_tmp);
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_req[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_gnt[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_addr[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_we[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_wdata[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__PVT__host_rdata[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__device_req[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__device_addr[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__device_we[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__device_wdata[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__device_rdata[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__cfg_device_addr_base[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__PVT__cfg_device_addr_mask[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    vlSelf->__PVT__halt_from_console = VL_RAND_RESET_I(1);
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__cfg_device_addr_mask[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__cfg_device_addr_base[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__device_rdata_i[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__device_wdata_o[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__device_we_o[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__device_addr_o[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__device_req_o[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__host_rdata_o[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__host_wdata_i[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__host_we_i[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__host_addr_i[__Vi0] = VL_RAND_RESET_I(32);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellout__u_bus__host_gnt_o[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
+        vlSelf->__Vcellinp__u_bus__host_req_i[__Vi0] = VL_RAND_RESET_I(1);
+    }
+    vlSelf->__PVT__u_bus__DOT__host_sel_req = VL_RAND_RESET_I(1);
+    vlSelf->__PVT__u_bus__DOT__device_sel_req = VL_RAND_RESET_I(1);
+    vlSelf->u_bus__DOT____Vlvbound_ha22eafa2__0 = VL_RAND_RESET_I(32);
+    vlSelf->__PVT__console0__DOT__sim_finish = VL_RAND_RESET_I(3);
+    vlSelf->__PVT__console0__DOT__log_fd = 0;
 }

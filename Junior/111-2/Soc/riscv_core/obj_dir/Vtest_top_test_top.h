@@ -9,106 +9,51 @@
 
 class Vtest_top__Syms;
 class Vtest_top_dpram__R200000_RB15;
-class Vtest_top_regfile;
+class Vtest_top_core_top;
 
 
 class Vtest_top_test_top final : public VerilatedModule {
   public:
     // CELLS
     Vtest_top_dpram__R200000_RB15* data_ram0;
-    Vtest_top_regfile* regfile0;
+    Vtest_top_core_top* core_top0;
 
     // DESIGN SPECIFIC STATE
-    // Anonymous structures to workaround compiler member-count bugs
-    struct {
-        VL_IN8(clk_i,0,0);
-        VL_IN8(rst_i,0,0);
-        VL_OUT8(halt_o,0,0);
-        CData/*5:0*/ __PVT__ctrl_stall_o;
-        CData/*0:0*/ __PVT__ce_wire;
-        CData/*0:0*/ __PVT__id_reg_we_o;
-        CData/*4:0*/ __PVT__id_reg_waddr_o;
-        CData/*4:0*/ __PVT__id_reg1_addr_o;
-        CData/*4:0*/ __PVT__id_reg2_addr_o;
-        CData/*0:0*/ __PVT__id_reg1_re_o;
-        CData/*0:0*/ __PVT__id_reg2_re_o;
-        CData/*0:0*/ __PVT__id_exe_inst_is_load_o;
-        CData/*4:0*/ __PVT__id_exe_rd_o;
-        CData/*0:0*/ __PVT__id_exe_reg_we_o;
-        CData/*4:0*/ __PVT__id_exe_reg_waddr_o;
-        CData/*4:0*/ __PVT__exe_reg_waddr_o;
-        CData/*0:0*/ __PVT__exe_reg_we_o;
-        CData/*0:0*/ __PVT__exe_mem_we_o;
-        CData/*3:0*/ __PVT__exe_mem_op_o;
-        CData/*0:0*/ __PVT__exe_stallreq_o;
-        CData/*0:0*/ __PVT__exe_jump_enable_o;
-        CData/*4:0*/ __PVT__exe_mem_reg_waddr_o;
-        CData/*0:0*/ __PVT__exe_mem_reg_we_o;
-        CData/*0:0*/ __PVT__exe_mem_mem_we_o;
-        CData/*3:0*/ __PVT__exe_mem_mem_op_o;
-        CData/*4:0*/ __PVT__mem_reg_waddr_o;
-        CData/*0:0*/ __PVT__mem_reg_we_o;
-        CData/*0:0*/ __PVT__mem_ram_w_request_o;
-        CData/*0:0*/ __PVT__mem_halt_o;
-        CData/*4:0*/ __PVT__mem_wb_reg_waddr_o;
-        CData/*0:0*/ __PVT__mem_wb_reg_we_o;
-        CData/*0:0*/ __PVT__id0__DOT__r_reg1_re_o;
-        CData/*0:0*/ __PVT__id0__DOT__r_reg2_re_o;
-        CData/*0:0*/ __PVT__id0__DOT__r_reg_we_o;
-        CData/*0:0*/ id0__DOT__inst_type_r__DOT____VdfgExtracted_he1154c64__0;
-        CData/*0:0*/ __PVT__exe0__DOT__isType_r;
-        CData/*0:0*/ __PVT__exe0__DOT__isType_m;
-        CData/*0:0*/ __PVT__exe0__DOT__op1_eq_op2;
-        CData/*0:0*/ __PVT__exe0__DOT__mult_req_o;
-        CData/*0:0*/ __PVT__exe0__DOT__div_req_o;
-        CData/*0:0*/ __PVT__exe0__DOT__mult_ready_i;
-        CData/*0:0*/ __PVT__exe0__DOT__div_ready_i;
-        CData/*0:0*/ __PVT__exe0__DOT__is_div_q_i;
-        CData/*0:0*/ __PVT__exe0__DOT__signed_adjust;
-        CData/*5:0*/ __PVT__exe0__DOT__mul0__DOT__cnt;
-        CData/*2:0*/ __PVT__exe0__DOT__mul0__DOT__S;
-        CData/*2:0*/ __PVT__exe0__DOT__mul0__DOT__S_nxt;
-        CData/*0:0*/ __PVT__exe0__DOT__mul0__DOT__mul_add;
-        CData/*5:0*/ __PVT__exe0__DOT__div0__DOT__cnt;
-        CData/*2:0*/ __PVT__exe0__DOT__div0__DOT__S;
-        CData/*2:0*/ __PVT__exe0__DOT__div0__DOT__S_next;
-        CData/*0:0*/ __PVT__exe0__DOT__div0__DOT__div_sub;
-        IData/*31:0*/ __PVT__pc_wire;
-        IData/*31:0*/ __PVT__if_id_inst_addr_o;
-        IData/*31:0*/ __PVT__if_id_inst_o;
-        IData/*31:0*/ __PVT__id_inst_o;
-        IData/*31:0*/ __PVT__id_exe_op1_o;
-        IData/*31:0*/ __PVT__id_exe_op2_o;
-        IData/*31:0*/ __PVT__id_exe_inst_o;
-        IData/*31:0*/ __PVT__id_exe_inst_addr_o;
-        IData/*31:0*/ __PVT__exe_reg_wdata_o;
-        IData/*31:0*/ __PVT__exe_mem_addr_o;
-        IData/*31:0*/ __PVT__exe_mem_data_o;
-        IData/*31:0*/ __PVT__exe_jump_addr_o;
-    };
-    struct {
-        IData/*31:0*/ __PVT__exe_mem_reg_wdata_o;
-        IData/*31:0*/ __PVT__exe_mem_mem_addr_o;
-        IData/*31:0*/ __PVT__exe_mem_mem_data_o;
-        IData/*31:0*/ __PVT__mem_reg_wdata_o;
-        IData/*31:0*/ __PVT__mem_ram_addr_o;
-        IData/*31:0*/ __PVT__mem_ram_data_o;
-        IData/*31:0*/ __PVT__mem_wb_reg_wdata_o;
-        IData/*31:0*/ __PVT__id0__DOT__op1_o_final;
-        IData/*31:0*/ __PVT__id0__DOT__op2_o_final;
-        IData/*31:0*/ __PVT__exe0__DOT__a_o;
-        IData/*31:0*/ __PVT__exe0__DOT__b_o;
-        IData/*31:0*/ __PVT__exe0__DOT__div_result_i;
-        IData/*31:0*/ __PVT__exe0__DOT__invert_result_div;
-        IData/*31:0*/ __PVT__exe0__DOT__mul0__DOT__reg32;
-        VlWide<3>/*64:0*/ __PVT__exe0__DOT__mul0__DOT__result;
-        VlWide<3>/*64:0*/ __PVT__exe0__DOT__mul0__DOT__result_tmp;
-        IData/*31:0*/ __PVT__exe0__DOT__div0__DOT__reg32;
-        VlWide<3>/*64:0*/ __PVT__exe0__DOT__div0__DOT__result;
-        VlWide<3>/*64:0*/ __PVT__exe0__DOT__div0__DOT__result_tmp;
-        QData/*63:0*/ __PVT__exe0__DOT__mult_result_i;
-        QData/*63:0*/ __PVT__exe0__DOT__invert_result;
-    };
+    VL_IN8(clk_i,0,0);
+    VL_IN8(rst_i,0,0);
+    VL_OUT8(halt_o,0,0);
+    CData/*0:0*/ __PVT__halt_from_console;
+    CData/*0:0*/ __PVT__u_bus__DOT__host_sel_req;
+    CData/*0:0*/ __PVT__u_bus__DOT__device_sel_req;
+    CData/*2:0*/ __PVT__console0__DOT__sim_finish;
+    IData/*31:0*/ u_bus__DOT____Vlvbound_ha22eafa2__0;
+    IData/*31:0*/ __PVT__console0__DOT__log_fd;
+    VlUnpacked<CData/*0:0*/, 1> __PVT__host_req;
+    VlUnpacked<CData/*0:0*/, 1> __PVT__host_gnt;
+    VlUnpacked<IData/*31:0*/, 1> __PVT__host_addr;
+    VlUnpacked<CData/*0:0*/, 1> __PVT__host_we;
+    VlUnpacked<IData/*31:0*/, 1> __PVT__host_wdata;
+    VlUnpacked<IData/*31:0*/, 1> __PVT__host_rdata;
+    VlUnpacked<CData/*0:0*/, 2> __PVT__device_req;
+    VlUnpacked<IData/*31:0*/, 2> __PVT__device_addr;
+    VlUnpacked<CData/*0:0*/, 2> __PVT__device_we;
+    VlUnpacked<IData/*31:0*/, 2> __PVT__device_wdata;
+    VlUnpacked<IData/*31:0*/, 2> __PVT__device_rdata;
+    VlUnpacked<IData/*31:0*/, 2> __PVT__cfg_device_addr_base;
+    VlUnpacked<IData/*31:0*/, 2> __PVT__cfg_device_addr_mask;
+    VlUnpacked<IData/*31:0*/, 2> __Vcellinp__u_bus__cfg_device_addr_mask;
+    VlUnpacked<IData/*31:0*/, 2> __Vcellinp__u_bus__cfg_device_addr_base;
+    VlUnpacked<IData/*31:0*/, 2> __Vcellinp__u_bus__device_rdata_i;
+    VlUnpacked<IData/*31:0*/, 2> __Vcellout__u_bus__device_wdata_o;
+    VlUnpacked<CData/*0:0*/, 2> __Vcellout__u_bus__device_we_o;
+    VlUnpacked<IData/*31:0*/, 2> __Vcellout__u_bus__device_addr_o;
+    VlUnpacked<CData/*0:0*/, 2> __Vcellout__u_bus__device_req_o;
+    VlUnpacked<IData/*31:0*/, 1> __Vcellout__u_bus__host_rdata_o;
+    VlUnpacked<IData/*31:0*/, 1> __Vcellinp__u_bus__host_wdata_i;
+    VlUnpacked<CData/*0:0*/, 1> __Vcellinp__u_bus__host_we_i;
+    VlUnpacked<IData/*31:0*/, 1> __Vcellinp__u_bus__host_addr_i;
+    VlUnpacked<CData/*0:0*/, 1> __Vcellout__u_bus__host_gnt_o;
+    VlUnpacked<CData/*0:0*/, 1> __Vcellinp__u_bus__host_req_i;
 
     // INTERNAL VARIABLES
     Vtest_top__Syms* const vlSymsp;
