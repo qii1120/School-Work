@@ -33,11 +33,29 @@ module exe_mem(
 
     output reg                            csr_we_o,
     output reg[`ADDR_WIDTH-1:0]           csr_waddr_o,
-    output reg[`DATA_WIDTH-1:0]           csr_wdata_o
+    output reg[`DATA_WIDTH-1:0]           csr_wdata_o,
+
+    input wire[`ADDR_WIDTH-1:0] inst_addr_i,
+    output reg[`ADDR_WIDTH-1:0] inst_addr_o,
+    input wire flush_int_i,
+
+    input wire[`DATA_WIDTH-1:0] exception_i,
+    output reg[`DATA_WIDTH-1:0] exception_o
 );
 
     always @(posedge clk_i) begin
         if (rst_i == 1) begin
+            reg_waddr_o <= `ZERO_REG;
+            reg_we_o <= `WRITE_ENABLE;
+            reg_wdata_o <= `ZERO;
+            mem_addr_o <= `ZERO;
+            mem_data_o <= `ZERO;
+            mem_we_o <= `WRITE_DISABLE;
+            mem_op_o <= `MEM_NOP;
+            csr_we_o <= `WRITE_DISABLE;
+            csr_wdata_o <= `ZERO;
+            csr_waddr_o <= `ZERO_REG;
+        end else if(flush_int_i) begin
             reg_waddr_o <= `ZERO_REG;
             reg_we_o <= `WRITE_ENABLE;
             reg_wdata_o <= `ZERO;
@@ -61,4 +79,18 @@ module exe_mem(
             csr_waddr_o <= csr_waddr_i;
         end //if
     end //always
+
+   //for interrupt ctrl
+    always @(posedge clk_i) begin
+        if (rst_i == 1'b1) begin
+            inst_addr_o <= `ZERO;
+            exception_o <= `ZERO;
+        end else if (flush_int_i) begin
+            inst_addr_o <= `ZERO;
+            exception_o <= `ZERO;
+        end else begin
+            inst_addr_o <= inst_addr_i;
+            exception_o <= exception_i;
+        end
+    end
 endmodule

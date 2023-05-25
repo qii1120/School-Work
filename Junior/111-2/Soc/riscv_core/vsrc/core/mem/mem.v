@@ -37,13 +37,22 @@ module mem(
 
     output reg                            csr_we_o,
     output reg[`ADDR_WIDTH-1:0]           csr_waddr_o,
-    output reg[`DATA_WIDTH-1:0]           csr_wdata_o
+    output reg[`DATA_WIDTH-1:0]           csr_wdata_o,
 
+
+    input wire[`ADDR_WIDTH-1:0] inst_addr_i,
+    output reg[`ADDR_WIDTH-1:0] inst_addr_o,
+
+    //for exception
+    input wire[`DATA_WIDTH-1:0]         exception_i,
+    output reg[`DATA_WIDTH-1:0]         exception_o
     //halt signal
     // output reg halt_o
 );
 
     wire[1:0] ram_addr_offset = mem_addr_i[1:0];
+    assign exception_o = exception_i;
+
     always @(*) begin
         if (rst_i == 1) begin
             reg_waddr_o = `ZERO_REG;
@@ -161,6 +170,13 @@ module mem(
             endcase
         end //if
     end //always
+    always @(clk_i) begin
+    if (rst_i==`RESET_ENABLE) begin
+            inst_addr_o <= `ZERO;
+        end else begin
+            inst_addr_o <= inst_addr_i;
+        end
+    end
     //  always @(posedge clk_i) begin
     //     //for isa test
     //     if (mem_op_i==`SW && mem_addr_i == `HALT_ADDR)

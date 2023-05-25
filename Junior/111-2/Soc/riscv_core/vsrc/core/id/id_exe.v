@@ -7,6 +7,7 @@ module id_exe(
     //from ctrl
     input wire[5:0] stall_i,
     input wire flush_jump_i,
+    input wire flush_int_i,
 
     // from id
     input wire[`RDATA_WIDTH-1:0] op1_i,
@@ -33,8 +34,28 @@ module id_exe(
     input wire[`CSR_ADDR_WIDTH-1:0] csr_addr_i,
 
     output reg csr_we_o,
-    output reg[`CSR_ADDR_WIDTH-1:0] csr_addr_o
+    output reg[`CSR_ADDR_WIDTH-1:0] csr_addr_o,
+
+    //for exception
+    input wire[`DATA_WIDTH-1:0] exception_i,
+    output reg[`DATA_WIDTH-1:0] exception_o
 );
+
+
+    //for exception
+    always @(posedge clk_i) begin
+        if (rst_i == 1) begin
+            exception_o <= `ZERO;
+        end else if(flush_jump_i | flush_int_i) begin
+            exception_o <= `ZERO;
+        end else if(stall_i[2] == `STOP && stall_i[3] == `STOP) begin
+            exception_o <= exception_o;
+        end else if(stall_i[2] == `STOP && stall_i[3] == `NOSTOP) begin
+            exception_o <= `ZERO;
+        end else begin
+            exception_o <= exception_i;
+        end
+    end
 
     always @(posedge clk_i) begin
         if (rst_i == 1) begin
@@ -73,7 +94,7 @@ module id_exe(
             inst_is_load_o <= 1'b0;
             rd_o <= `ZERO_REG;
             inst_addr_o <= `ZERO;
-        end else if(flush_jump_i == 1'b1) begin
+        end else if(flush_jump_i == 1'b1 || flush_int_i) begin
             inst_o   <=  `NOP;
             op1_o     <= `ZERO;
             op2_o     <= `ZERO;

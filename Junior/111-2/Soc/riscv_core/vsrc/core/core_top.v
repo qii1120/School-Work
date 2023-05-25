@@ -15,8 +15,12 @@ module core_top(
     output reg[`ADDR_WIDTH-1:0] ram_addr_o,
     output reg[`DATA_WIDTH-1:0] ram_wdata_o,
     input wire[`DATA_WIDTH-1:0] ram_rdata_i,
-    output reg ram_we_o
+    output reg ram_we_o,
 
+    //for int
+    input wire irq_external_i,
+    input wire irq_software_i,
+    input wire irq_timer_i
 );
 
 assign rom_addr_o = pc_wire;
@@ -36,22 +40,84 @@ wire[`DATA_WIDTH-1:0] if_inst_o;
 wire[`DATA_WIDTH-1:0] ram_data_o; 
 
 
+
+wire int_ctrl_interrupt_type_o;
+wire int_ctrl_interrupt_en_o;
+wire int_ctrl_cause_we_o;
+wire[3:0] int_ctrl_trap_casue_o;
+wire int_ctrl_epc_we_o;
+wire[`DATA_WIDTH-1:0] int_ctrl_epc_o;
+wire int_ctrl_mstatus_ie_clear_o; //for interrupt
+wire int_ctrl_mstatus_ie_set_o; //for mret
+wire int_ctrl_flush_o;   // clear all pipeline
+wire[`DATA_WIDTH-1:0] int_ctrl_new_pc_o;   // pc_reg = new_pc_o
+
+//interrupt ctrl
+interrupt_ctrl interrupt_ctrl0(
+    .clk_i(clk_i),
+    .rst_i(rst_i),
+
+    .exception_i(mem_exception_o), //from mem (mret, ecall)
+    .pc_i(ctrl_pc_o),             // from mem.pc
+
+    // from csr
+    .mstatus_ie_i(csr_mstatus_ie_o),    // global interrupt enabled or not
+    .mie_external_i(csr_mie_external_o),  // external interrupt enbled or not
+    .mie_timer_i(csr_mie_timer_o),     // timer interrupt enabled or not
+    .mie_sw_i(csr_mie_software_o),        // sw interrupt enabled or not
+
+    .mip_external_i(csr_mip_external_o),   // external interrupt pending
+    .mip_timer_i(csr_mip_timer_o),      // timer interrupt pending
+    .mip_sw_i(csr_mip_software_o),         // sw interrupt pending
+
+    .mtvec_i(csr_mtvec_o),          // the trap vector
+    .epc_i(csr_epc_o),            // get the epc for the mret instruction
+
+    //to csr
+    .interrupt_type_o(int_ctrl_interrupt_type_o),
+    .cause_we_o(int_ctrl_cause_we_o),
+    .trap_casue_o(int_ctrl_trap_casue_o),
+
+    .epc_we_o(int_ctrl_epc_we_o),
+    .epc_o(int_ctrl_epc_o),
+
+    .mstatus_ie_clear_o(int_ctrl_mstatus_ie_clear_o), //for interrupt
+    .mstatus_ie_set_o(int_ctrl_mstatus_ie_set_o), //for mret
+
+    /* ---signals to other stages of the pipeline  ----*/
+    .interrupt_en_o(int_ctrl_interrupt_en_o),
+    .new_pc_o(int_ctrl_new_pc_o)   // pc_reg = new_pc_o
+);
+
+
+
 //ctrl
 wire                    ctrl_flush_jump_o;
+wire                    ctrl_flush_int_o;
 wire[`ADDR_WIDTH-1:0]   ctrl_new_pc_o;
 wire[5:0]               ctrl_stall_o;
+wire[`ADDR_WIDTH-1:0]   ctrl_pc_o;
 wire[`DATA_WIDTH-1:0]   ram_data_o;
 
 pipe_ctrl ctrl0(
+    .clk_i(clk_i),
     .rst_i(rst_i),
     //.stallreq_from_if_i(if_stallreq_o), 
     .stallreq_from_id_i(id_stallreq_o), 
     .stallreq_from_exe_i(exe_stallreq_o),
-    .jump_enable_i(exe_jump_enable_o),
+    .jump_en_i(exe_jump_enable_o),
     .jump_addr_i(exe_jump_addr_o),
     .stall_o(ctrl_stall_o),
     .flush_jump_o(ctrl_flush_jump_o),
-    .new_pc_o(ctrl_new_pc_o)
+    .new_pc_o(ctrl_new_pc_o),
+    //int_ctrl
+    .int_en_i(int_ctrl_interrupt_en_o),
+    .isr_pc_i(int_ctrl_new_pc_o),
+    .flush_int_o(ctrl_flush_int_o),
+    //for interrupt pc
+    .pc_i(mem_inst_addr_o),
+    .pc_o(ctrl_pc_o)
+
 );
 
 
@@ -71,7 +137,9 @@ pc_reg pc_reg0(
     //to if_id
     .pc_o(pc_wire),
     // to rom
-    .ce_o(ce_wire)
+    .ce_o(ce_wire),
+    //for int
+    .flush_int_i(ctrl_flush_int_o)
 );
 
 
@@ -90,7 +158,9 @@ if_id if_id0(
     .flush_jump_i(ctrl_flush_jump_o),    
     //to id
     .inst_addr_o(if_id_inst_addr_o),
-    .inst_o(if_id_inst_o)
+    .inst_o(if_id_inst_o),
+    //for int
+    .flush_int_i(ctrl_flush_int_o)
 );
 
 
@@ -112,6 +182,7 @@ wire[`ADDR_WIDTH-1:0]       id_inst_addr_o;
 wire                        id_stallreq_o; 
 wire                        id_csr_we_o;
 wire[`CSR_ADDR_WIDTH-1:0]   id_csr_addr_o;
+wire[`DATA_WIDTH-1:0]       id_exception_o;
 
 
 id id0(
@@ -160,7 +231,9 @@ id id0(
     //for csr
     //to id_exe
     .csr_we_o(id_csr_we_o),
-    .csr_addr_o(id_csr_addr_o)
+    .csr_addr_o(id_csr_addr_o),
+    //for exception
+    .exception_o(id_exception_o)
 
 );
     
@@ -181,6 +254,7 @@ wire[`RADDR_WIDTH-1:0]      id_exe_rd_o;
 
 wire                        id_exe_csr_we_o;
 wire[`CSR_ADDR_WIDTH-1:0]   id_exe_csr_addr_o;
+wire[`DATA_WIDTH-1:0]       id_exe_exception_o;
 
 
 
@@ -218,7 +292,12 @@ id_exe id_exe0(
     .csr_addr_i(id_csr_addr_o),
     //to exe
     .csr_we_o(id_exe_csr_we_o),
-    .csr_addr_o(id_exe_csr_addr_o)
+    .csr_addr_o(id_exe_csr_addr_o),
+    //for int 
+    .flush_int_i(ctrl_flush_int_o),
+    //for exception
+    .exception_i(id_exception_o),
+    .exception_o(id_exe_exception_o)
 
 );
 
@@ -243,6 +322,8 @@ wire                        exe_csr_we_o;
 wire[`CSR_ADDR_WIDTH-1:0]   exe_csr_waddr_o;
 wire[`DATA_WIDTH-1:0]       exe_csr_wdata_o;
 wire[`CSR_ADDR_WIDTH-1:0]   exe_csr_raddr_o;
+wire[`DATA_WIDTH-1:0]       exe_inst_addr_o;
+wire[`DATA_WIDTH-1:0]       exe_exception_o;
 
 exe exe0(
     .rst_i(rst_i),.clk_i(clk_i),
@@ -284,8 +365,13 @@ exe exe0(
     //mem forward
     .mem_csr_we_i(mem_csr_we_o),
     .mem_csr_waddr_i(mem_csr_waddr_o),
-    .mem_csr_wdata_i(mem_csr_wdata_o)
-
+    .mem_csr_wdata_i(mem_csr_wdata_o),
+    //for int
+    .inst_addr_o(exe_inst_addr_o),
+    .flush_int_i(ctrl_flush_int_o),
+    //for exception
+    .exception_i(id_exe_exception_o),
+    .exception_o(exe_exception_o)
 
 );
 
@@ -302,6 +388,8 @@ wire                        exe_mem_csr_we_o;
 wire[`CSR_ADDR_WIDTH-1:0]   exe_mem_csr_waddr_o;
 wire[`DATA_WIDTH-1:0]       exe_mem_csr_wdata_o;
 
+wire[`DATA_WIDTH-1:0]       exe_mem_inst_addr_o;
+wire[`DATA_WIDTH-1:0]       exe_mem_exception_o;
 
 exe_mem exe_mem0(
     .rst_i(rst_i), .clk_i(clk_i),
@@ -332,8 +420,14 @@ exe_mem exe_mem0(
     //to mem
     .csr_we_o(exe_mem_csr_we_o),
     .csr_waddr_o(exe_mem_csr_waddr_o),
-    .csr_wdata_o(exe_mem_csr_wdata_o)
-
+    .csr_wdata_o(exe_mem_csr_wdata_o),
+    //for interrupt ctrl
+    .inst_addr_i(exe_inst_addr_o),
+    .inst_addr_o(exe_mem_inst_addr_o),
+    .flush_int_i(ctrl_flush_int_o),
+    //for exception
+    .exception_i(exe_exception_o),
+    .exception_o(exe_mem_exception_o)
 
 );
 
@@ -346,10 +440,12 @@ wire[`ADDR_WIDTH-1:0]       mem_mem_addr_o;
 wire                        mem_mem_we_o;
 wire[`DATA_WIDTH-1:0]       mem_mem_data_o;
 wire                        mem_mem_ce_o;
+wire[`ADDR_WIDTH-1:0]       mem_inst_addr_o;
 //for csr to mem_wb
 wire                        mem_csr_we_o;
 wire[`CSR_ADDR_WIDTH-1:0]   mem_csr_waddr_o;
 wire[`DATA_WIDTH-1:0]       mem_csr_wdata_o;
+wire[`DATA_WIDTH-1:0]       mem_exception_o;
 
 
 mem mem0(
@@ -385,7 +481,13 @@ mem mem0(
     //to mem_wb
     .csr_we_o(mem_csr_we_o),
     .csr_waddr_o(mem_csr_waddr_o),
-    .csr_wdata_o(mem_csr_wdata_o)
+    .csr_wdata_o(mem_csr_wdata_o),
+    //for int
+    .inst_addr_i(exe_mem_inst_addr_o),
+    .inst_addr_o(mem_inst_addr_o),
+    //for exception
+    .exception_i(exe_mem_exception_o),
+    .exception_o(mem_exception_o)
 
 );
 
@@ -421,8 +523,9 @@ mem_wb mem_wb0(
     .csr_we_o(mem_wb_csr_we_o),
     .csr_waddr_o(mem_wb_csr_waddr_o),
     .csr_wdata_o(mem_wb_csr_wdata_o),
-    .instret_incr_o(mem_wb_instret_incr_o)
-
+    .instret_incr_o(mem_wb_instret_incr_o),
+    //from interrupt ctrl
+    .flush_int_i(ctrl_flush_int_o)
 
 );
     
@@ -452,6 +555,17 @@ regfile regfile0(
 
 
 wire [`DATA_WIDTH-1:0] csr_file_csr_rdata_o;
+wire csr_mstatus_ie_o;
+wire csr_mie_external_o;
+wire csr_mie_timer_o;
+wire csr_mie_software_o;
+    
+wire csr_mip_external_o;
+wire csr_mip_timer_o;
+wire csr_mip_software_o;
+wire[`DATA_WIDTH-1:0]  csr_mtvec_o;
+wire[`DATA_WIDTH-1:0]  csr_epc_o;
+
 csr_file csr0(
     .clk_i(clk_i),
     .rst_i(rst_i),
@@ -460,7 +574,29 @@ csr_file csr0(
     .we_i(mem_wb_csr_we_o),
     .waddr_i(mem_wb_csr_waddr_o),
     .wdata_i(mem_wb_csr_wdata_o),
-    .instret_incr_i(mem_wb_instret_incr_o)
-);
+    .instret_incr_i(mem_wb_instret_incr_o),
+    //for interrupt
+    .irq_timer_i(irq_timer_i),
+    .irq_software_i(irq_software_i),  
+    .irq_external_i(irq_external_i),  
+    .interrupt_type_i(int_ctrl_interrupt_type_o),
+    .cause_we_i(int_ctrl_cause_we_o),
+    .cause_i(int_ctrl_trap_casue_o),
+    .epc_we_i(int_ctrl_epc_we_o),
+    .epc_i(int_ctrl_epc_o),
+    .mstatus_ie_clear_i(int_ctrl_mstatus_ie_clear_o),
+    .mstatus_ie_set_i(int_ctrl_mstatus_ie_set_o),
+
+    .mstatus_ie_o(csr_mstatus_ie_o),
+    .mie_external_o(csr_mie_external_o),
+    .mie_timer_o(csr_mie_timer_o),
+    .mie_software_o(csr_mie_software_o),
+    .mip_external_o(csr_mip_external_o),
+    .mip_timer_o(csr_mip_timer_o),
+    .mip_software_o(csr_mip_software_o),
+    .mtvec_o(csr_mtvec_o),
+    .epc_o(csr_epc_o)
+
+    );
 
 endmodule

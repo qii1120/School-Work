@@ -12,7 +12,7 @@ VM_TIMING = 0
 # Coverage output mode?  0/1 (from --coverage)
 VM_COVERAGE = 0
 # Parallel builds?  0/1 (from --output-split)
-VM_PARALLEL_BUILDS = 0
+VM_PARALLEL_BUILDS = 1
 # Tracing output mode?  0/1 (from --trace/--trace-fst)
 VM_TRACE = 1
 # Tracing output mode in VCD format?  0/1 (from --trace)
@@ -28,6 +28,8 @@ VM_CLASSES_FAST += \
 	Vtest_top___024root__DepSet_h76c3b2a4__0 \
 	Vtest_top_test_top__DepSet_h43df7e51__0 \
 	Vtest_top_core_top__DepSet_h0a0c36c8__0 \
+	Vtest_top_core_top__DepSet_h0a0c36c8__1 \
+	Vtest_top_core_top__DepSet_h8f25d834__0 \
 	Vtest_top_dpram__R200000_RB15__DepSet_h5d83a859__0 \
 	Vtest_top_dpram__R200000_RB15__DepSet_h3cac4dc3__0 \
 	Vtest_top_regfile__DepSet_h717a3bd1__0 \
@@ -35,6 +37,7 @@ VM_CLASSES_FAST += \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
+	Vtest_top__ConstPool_0 \
 	Vtest_top___024root__Slow \
 	Vtest_top___024root__DepSet_h23aaccb8__0__Slow \
 	Vtest_top___024root__DepSet_h76c3b2a4__0__Slow \

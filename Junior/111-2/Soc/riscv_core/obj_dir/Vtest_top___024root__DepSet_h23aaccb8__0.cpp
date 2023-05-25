@@ -57,7 +57,13 @@ void Vtest_top___024root___eval_triggers__act(Vtest_top___024root* vlSelf) {
     // Body
     vlSelf->__VactTriggered.at(0U) = ((IData)(vlSelf->clk_i) 
                                       & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk_i)));
+    vlSelf->__VactTriggered.at(1U) = ((IData)(vlSelf->clk_i) 
+                                      != (IData)(vlSelf->__Vtrigrprev__TOP__clk_i));
     vlSelf->__Vtrigrprev__TOP__clk_i = vlSelf->clk_i;
+    if (VL_UNLIKELY((1U & (~ (IData)(vlSelf->__VactDidInit))))) {
+        vlSelf->__VactDidInit = 1U;
+        vlSelf->__VactTriggered.at(1U) = 1U;
+    }
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vtest_top___024root___dump_triggers__act(vlSelf);
@@ -79,8 +85,11 @@ void Vtest_top_regfile___nba_sequent__TOP__test_top__core_top0__regfile0__0(Vtes
 void Vtest_top_dpram__R200000_RB15___nba_sequent__TOP__test_top__data_ram0__0(Vtest_top_dpram__R200000_RB15* vlSelf);
 void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__1(Vtest_top_core_top* vlSelf);
 void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__2(Vtest_top_core_top* vlSelf);
-void Vtest_top_test_top___nba_sequent__TOP__test_top__1(Vtest_top_test_top* vlSelf);
 void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__3(Vtest_top_core_top* vlSelf);
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__4(Vtest_top_core_top* vlSelf);
+void Vtest_top_test_top___nba_sequent__TOP__test_top__1(Vtest_top_test_top* vlSelf);
+void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__5(Vtest_top_core_top* vlSelf);
+void Vtest_top_core_top___nba_comb__TOP__test_top__core_top0__0(Vtest_top_core_top* vlSelf);
 
 void Vtest_top___024root___eval_nba(Vtest_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -97,8 +106,18 @@ void Vtest_top___024root___eval_nba(Vtest_top___024root* vlSelf) {
         Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__1((&vlSymsp->TOP__test_top__core_top0));
         Vtest_top_regfile___ico_sequent__TOP__test_top__core_top0__regfile0__0((&vlSymsp->TOP__test_top__core_top0__regfile0));
         Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__2((&vlSymsp->TOP__test_top__core_top0));
-        Vtest_top_test_top___nba_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
+    }
+    if (vlSelf->__VnbaTriggered.at(1U)) {
         Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__3((&vlSymsp->TOP__test_top__core_top0));
+    }
+    if (vlSelf->__VnbaTriggered.at(0U)) {
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__4((&vlSymsp->TOP__test_top__core_top0));
+        vlSelf->__Vm_traceActivity[3U] = 1U;
+        Vtest_top_test_top___nba_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
+        Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__5((&vlSymsp->TOP__test_top__core_top0));
         Vtest_top_test_top___ico_sequent__TOP__test_top__1((&vlSymsp->TOP__test_top));
+    }
+    if ((vlSelf->__VnbaTriggered.at(0U) | vlSelf->__VnbaTriggered.at(1U))) {
+        Vtest_top_core_top___nba_comb__TOP__test_top__core_top0__0((&vlSymsp->TOP__test_top__core_top0));
     }
 }

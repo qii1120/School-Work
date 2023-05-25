@@ -82,6 +82,9 @@ VL_ATTR_COLD void Vtest_top___024root___dump_triggers__act(Vtest_top___024root* 
     if (vlSelf->__VactTriggered.at(0U)) {
         VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk_i)\n");
     }
+    if (vlSelf->__VactTriggered.at(1U)) {
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @([changed] clk_i)\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -97,6 +100,9 @@ VL_ATTR_COLD void Vtest_top___024root___dump_triggers__nba(Vtest_top___024root* 
     if (vlSelf->__VnbaTriggered.at(0U)) {
         VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk_i)\n");
     }
+    if (vlSelf->__VnbaTriggered.at(1U)) {
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @([changed] clk_i)\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -109,7 +115,8 @@ VL_ATTR_COLD void Vtest_top___024root___ctor_var_reset(Vtest_top___024root* vlSe
     vlSelf->rst_i = VL_RAND_RESET_I(1);
     vlSelf->halt_o = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__clk_i = VL_RAND_RESET_I(1);
-    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
+    vlSelf->__VactDidInit = 0;
+    for (int __Vi0 = 0; __Vi0 < 4; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
 }

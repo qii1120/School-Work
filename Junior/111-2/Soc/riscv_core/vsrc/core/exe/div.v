@@ -6,6 +6,7 @@ module div#(parameter XLEN = 32)
     input  [XLEN-1 : 0]     b_i,
     input                   req_i,
     input wire              is_q_i,
+    input wire              flush_i,
     output reg [XLEN-1 : 0] result_o,
     output reg              ready_o
 );
@@ -44,7 +45,7 @@ reg [2 : 0] S, S_next;
 
 always @(posedge clk_i)
 begin
-    if (rst_i | ~req_i)
+    if (rst_i | ~req_i | flush_i)
         S <= S_IDLE;
     else
         S <= S_next;
@@ -108,14 +109,16 @@ end
 
 always @(posedge clk_i)
 begin
-    if (S == S_DONE) begin
+    if (S == S_DONE & ~flush_i) begin
         if (is_q_i)
             result_o <= quotient;
         else
             result_o <= remainder;
-    end else begin
+    end else if (flush_i) 
+        result_o <= 32'b0;
+    else
         result_o <= result_o;
-    end
 end
+
 
 endmodule

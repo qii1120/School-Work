@@ -23,14 +23,16 @@ module mem_wb(
     output reg                  csr_we_o,
     output reg[`CSR_ADDR_WIDTH-1:0] csr_waddr_o,
     output reg[`DATA_WIDTH-1:0] csr_wdata_o,
-    output reg                  instret_incr_o
+    output reg                  instret_incr_o,
+
+    input wire flush_int_i
 
 
 );
 
 //csr file
     always @(posedge clk_i) begin
-        if (rst_i == 1) begin
+        if (rst_i == 1 || flush_int_i == 1) begin
             csr_we_o <= `WRITE_DISABLE;
             csr_waddr_o <= {12'b0};
             csr_wdata_o <= `ZERO;
@@ -44,7 +46,7 @@ module mem_wb(
     end //always
 
     always @(posedge clk_i) begin
-        if (rst_i == 1) begin
+        if (rst_i == 1 || flush_int_i == 1) begin
             reg_waddr_o <= `ZERO_REG;
             reg_we_o <= `WRITE_DISABLE;
             reg_wdata_o <= `ZERO;

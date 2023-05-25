@@ -31,6 +31,9 @@ module exe(
     output reg[`DATA_WIDTH-1:0] csr_wdata_o,
     output reg[`CSR_ADDR_WIDTH-1:0] csr_waddr_o,
     output reg csr_we_o,
+    
+    output reg[`ADDR_WIDTH-1:0] inst_addr_o,
+    input wire flush_int_i,
     //to pipe_ctrl
     output reg stallreq_o,
     output reg[`ADDR_WIDTH-1:0] jump_addr_o,
@@ -40,7 +43,11 @@ module exe(
     //for csr data read forward
     input wire                          mem_csr_we_i,
     input wire[`CSR_ADDR_WIDTH-1:0]     mem_csr_waddr_i,
-    input wire[`DATA_WIDTH-1:0]         mem_csr_wdata_i
+    input wire[`DATA_WIDTH-1:0]         mem_csr_wdata_i,
+
+    //for exception
+    input wire[`DATA_WIDTH-1:0]         exception_i,
+    output reg[`DATA_WIDTH-1:0]         exception_o
 );
 
     wire[6:0] opcode = inst_i[6:0];
@@ -73,7 +80,8 @@ module exe(
         .a_i(a_o),
         .b_i(b_o),
         .ready_o(mult_ready_i),
-        .result_o(mult_result_i)
+        .result_o(mult_result_i),
+        .flush_i(flush_int_i)
     );
 
     div#(.XLEN(`DATA_WIDTH)) div0(
@@ -84,9 +92,13 @@ module exe(
         .req_i(div_req_o),
         .is_q_i(is_div_q_i),
         .ready_o(div_ready_i),
-        .result_o(div_result_i)
+        .result_o(div_result_i),
+        .flush_i(flush_int_i)
     );
 
+    assign inst_addr_o = inst_addr_i;
+    assign exception_o = exception_i;
+    
     assign stallreq_o = (mult_req_o & ~mult_ready_i)|(div_req_o & ~div_ready_i);
 
     wire is_a_neg = op1_i[`DATA_WIDTH-1];
@@ -449,5 +461,5 @@ module exe(
             endcase
         end //if
     end //always
-    
+
 endmodule

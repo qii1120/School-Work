@@ -6,6 +6,7 @@ module if_id(
 
     input wire[5:0] stall_i,
     input wire flush_jump_i,
+    input wire flush_int_i,
 
     input wire[`ADDR_WIDTH-1:0] inst_addr_i, //pc address
     input wire[`DATA_WIDTH-1:0] inst_i,
@@ -24,7 +25,7 @@ module if_id(
         end else if (stall_i[1]==`STOP && stall_i[2]==`NOSTOP) begin
             inst_addr_o <= 0;
             inst_o <= `NOP;
-        end else if (flush_jump_i == 1'b1) begin
+        end else if (flush_jump_i == 1'b1 || flush_int_i) begin
             inst_addr_o <= 0;
             inst_o <= `NOP;
         end else begin

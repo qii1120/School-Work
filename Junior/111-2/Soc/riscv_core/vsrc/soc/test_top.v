@@ -9,14 +9,15 @@ module test_top(
 
 );
 
-   localparam int NrDevices = 2;
+   localparam int NrDevices = 3;
    localparam int NrHosts = 1;
    localparam int MemSize = 32'h200000;
    localparam int MemAddrWidth = 21;
 
    `define     HOST_CORE_PORT 0
-   `define     DEV_RAM        0
-   `define     DEV_CONSOLE    1
+   `define     DEV_RAM        1
+   `define     DEV_CONSOLE    2
+   `define     DEV_CLINT      0
    
 
     // host and device signals
@@ -42,11 +43,16 @@ module test_top(
     assign cfg_device_addr_mask[`DEV_RAM] = ~32'h1FFFFF; // 2 MB
     assign cfg_device_addr_base[`DEV_CONSOLE] = 32'h200000;
     assign cfg_device_addr_mask[`DEV_CONSOLE] = ~32'hFFFFF; // 1 MB
+    assign cfg_device_addr_base[`DEV_CLINT] = 32'h2000000;
+    assign cfg_device_addr_mask[`DEV_CLINT] = ~32'hFFFF; 
+
    
     wire halt_from_console;
     assign halt_o = halt_from_console;
 
-   
+    wire irq_external = 1'b0;
+
+
     bus #(
         .NrDevices    ( NrDevices ),
         .NrHosts      ( NrHosts   ),
@@ -73,6 +79,22 @@ module test_top(
         .cfg_device_addr_mask
     );
 
+    wire clint_irq_software_o;
+    wire clint_irq_timer_o;
+
+    clint clint0(
+        .clk_i          (clk_i),
+        .rst_i          (rst_i),
+        .req_i          (device_req[`DEV_CLINT]),
+        .we_i           (device_we[`DEV_CLINT]),
+        .addr_i         (device_addr[`DEV_CLINT]),
+        .data_i         (device_wdata[`DEV_CLINT]),
+		.data_o         (device_rdata[`DEV_CLINT]),
+        .timer_irq_o    (clint_irq_timer_o),
+        .software_irq_o (clint_irq_software_o)
+
+    );
+
     console #(
         .LogName("./log/console.log")
         ) console0 (
@@ -84,6 +106,7 @@ module test_top(
         .addr_i    (device_addr[`DEV_CONSOLE]),
         .wdata_i   (device_wdata[`DEV_CONSOLE]),
         .halt_o    (halt_from_console)
+
         );
 
 
@@ -102,13 +125,13 @@ module test_top(
 
         .inst_ce_i(inst_ce_o),
         .pc_i(pc_o),
-        .inst_o(inst_o)
+        .inst_o(inst_o)        
 	);
 
     wire inst_ce_o;
     wire[`ADDR_WIDTH-1:0] pc_o;
     wire[`DATA_WIDTH-1:0] inst_o;
-
+    
     core_top core_top0(
 		.clk_i(clk_i),
 		.rst_i(rst_i),
@@ -121,7 +144,12 @@ module test_top(
 		.ram_addr_o(host_addr[`HOST_CORE_PORT]),
 		.ram_we_o(host_we[`HOST_CORE_PORT]),        
 		.ram_wdata_o(host_wdata[`HOST_CORE_PORT]),
-		.ram_rdata_i(host_rdata[`HOST_CORE_PORT])
+		.ram_rdata_i(host_rdata[`HOST_CORE_PORT]),
+
+        //for int
+        .irq_external_i(irq_external),
+        .irq_software_i(clint_irq_software_o),
+        .irq_timer_i(clint_irq_timer_o)
 
 	);
 	

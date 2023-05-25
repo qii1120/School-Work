@@ -1,3 +1,4 @@
+
 module console #(
   parameter string LogName = "./log/console.log",
   parameter bit    FlushOnChar = 1

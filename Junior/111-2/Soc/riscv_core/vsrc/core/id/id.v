@@ -42,10 +42,17 @@ module id(
 
     // signal for csr
     output reg csr_we_o,
-    output reg[`CSR_ADDR_WIDTH-1:0] csr_addr_o
+    output reg[`CSR_ADDR_WIDTH-1:0] csr_addr_o,
+
+        //for exception
+    output reg[`DATA_WIDTH-1:0] exception_o
 
     );
     
+    assign exception_o = {30'b0, except_ecall, except_mret};
+    reg except_mret;
+    reg except_ecall;
+
     assign inst_addr_o = inst_addr_i;
     assign csr_we_o = `WRITE_DISABLE;
     
@@ -117,7 +124,21 @@ module id(
             op1_o_final = `ZERO;
             op2_o_final = `ZERO;
             csr_we_o = 1'b0;
+            except_mret = 1'b0;
+            except_ecall = 1'b0;
         end else begin
+            inst_o = `NOP;
+            reg1_raddr_o = `ZERO_REG;
+            reg2_raddr_o = `ZERO_REG;
+            reg1_re_o = `READ_DISABLE;
+            reg2_re_o = `READ_DISABLE;
+            reg_we_o = `WRITE_DISABLE;
+            reg_waddr_o = `ZERO_REG;
+            op1_o_final = `ZERO;
+            op2_o_final = `ZERO;
+            csr_we_o = 1'b0;
+            except_mret = 1'b0;
+            except_ecall = 1'b0;
             case (opcode)
                 `INST_TYPE_I:begin
                         inst_o = inst_i;
@@ -245,6 +266,24 @@ module id(
                             op2_o_final = `ZERO;
                             csr_we_o = `WRITE_ENABLE;
                             csr_addr_o = inst_i[31:20];
+                        end
+                        `INST_CSR_PRIV: begin
+                            if( (inst_i[31:25]==7'b0011000) && (rs2 == 5'b00010)) begin  //mret
+                                // {00110, 00, rs2(00010), rs1(00000), funct3(000), rd(00000), opcode = 7b'1110011 }
+                                // Return from traps in M-mode, and MRET copies MPIE into MIE, then sets MPIE.
+                                // mret  :   ExceptionReturn(Machine)
+                                except_mret = 1'b1;
+                            end
+                            if((inst_i[31:25]==7'b0000000) &&  (rs2 == 5'b00000))  begin //ecall
+                                // {00000, 00, rs2(00000), rs1(00000), funct3(000), rd(00000), opcode = 7b'1110011 }
+                                // Make a request to the supporting execution environment.
+                                // When executed in U-mode, S-mode, or M-mode, it generates an
+                                // environment-call-from-U-mode exception, environment-call-from-S-mode
+                                // exception, or environment-call-from-M-mode exception, respectively, and
+                                // performs no other operation.
+                                // ecall  :   RaiseException(EnvironmentCall)
+                                except_ecall= 1'b1;
+                            end
                         end
                         default:begin
                             inst_o = `NOP;
