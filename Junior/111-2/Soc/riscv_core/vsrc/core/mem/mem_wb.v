@@ -26,8 +26,6 @@ module mem_wb(
     output reg                  instret_incr_o,
 
     input wire flush_int_i
-
-
 );
 
 //csr file
