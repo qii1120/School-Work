@@ -1,4 +1,4 @@
-obj/signal.o: src/signal.c /usr/include/stdc-predef.h include/myhdr.h \
+obj/server.o: src/server.c /usr/include/stdc-predef.h include/myhdr.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -116,4 +116,7 @@ obj/signal.o: src/signal.c /usr/include/stdc-predef.h include/myhdr.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min.h \
- /usr/include/x86_64-linux-gnu/bits/dirent_ext.h
+ /usr/include/x86_64-linux-gnu/bits/dirent_ext.h \
+ /usr/local/include/hiredis/hiredis.h /usr/local/include/hiredis/read.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /usr/local/include/hiredis/sds.h /usr/local/include/hiredis/alloc.h
