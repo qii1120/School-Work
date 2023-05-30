@@ -25,7 +25,7 @@ void list_mail(char *buff, Client *client, redisContext *user_DB)
     reply = redisCommand(user_DB, "LRANGE %s_mail_list 0 -1", client->name);
     if (reply->type == REDIS_REPLY_ARRAY && reply->elements > 0)
     {
-        char buf[10*BUFFER_SIZE], temp[5*BUFFER_SIZE];
+        char buf[10 * BUFFER_SIZE], temp[5 * BUFFER_SIZE];
         sprintf(buf, "<id>  <date>              <sender>    <message>\n");
         for (int i = 0; i < reply->elements; i++)
         {
@@ -46,7 +46,7 @@ void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB
     time_t cur_time;
     time(&cur_time);
     struct tm *time_info = localtime(&cur_time);
-    char timebuf[BUFFER_SIZE], inst[BUFFER_SIZE], user_name[BUFFER_SIZE], message[5*BUFFER_SIZE], mail_info[BUFFER_SIZE];
+    char timebuf[BUFFER_SIZE], inst[BUFFER_SIZE], id[BUFFER_SIZE], user_name[BUFFER_SIZE], message[5 * BUFFER_SIZE], mail_info[BUFFER_SIZE];
     strftime(timebuf, 20, "%Y-%m-%d %H:%M:%S", time_info);
     sscanf(buff, "%s %s %[^\n]", inst, user_name, message);
     reply = redisCommand(user_DB, "GET %s", user_name);
@@ -54,7 +54,7 @@ void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB
     {
         write(client->socketfd, "User not found !\n", strlen("User not found !\n"));
         freeReplyObject(reply);
-        return ;
+        return;
     }
     freeReplyObject(reply);
 
@@ -64,7 +64,7 @@ void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB
         int fd[2];
         if (pipe(fd) == -1)
             perror("pipe");
-        //printf("%s\n", buff + (redirect - buff) + 1);
+        // printf("%s\n", buff + (redirect - buff) + 1);
         strcpy(message, buff + (redirect - buff) + 1);
         shell_cmd(numberPipe, message, fd[1]);
         close(fd[1]);
@@ -72,12 +72,16 @@ void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB
         close(fd[0]);
     }
 
-    long long id;
-    reply = redisCommand(user_DB, "LLEN %s_mail_list", user_name);
-    if (reply && reply->type == REDIS_REPLY_INTEGER)
-        id = reply->integer;
+    reply = redisCommand(user_DB, "LRANGE %s_mail_list 0 -1", user_name);
+    if (reply->type == REDIS_REPLY_ARRAY && reply->elements > 0)
+    {
+        sscanf(reply->element[0]->str, "%s", id);
+        sprintf(id, "%d", atoi(id)+1);
+    }
+    else if (reply->elements <= 0)
+        strcpy(id, "0");
     freeReplyObject(reply);
-    sprintf(mail_info, "%-5lld %-19s %-11s %s", id, timebuf, client->name, message);
+    sprintf(mail_info, "%-5s %-19s %-11s %s", id, timebuf, client->name, message);
 
     reply = redisCommand(user_DB, "LPUSH %s_mail_list %s", user_name, mail_info);
     if (reply && reply->type == REDIS_REPLY_INTEGER && reply->integer != 0)
@@ -87,6 +91,27 @@ void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB
 
 void delete_mail(char *buff, Client *client, redisContext *user_DB)
 {
-    
+    char instruction[BUFFER_SIZE], delete_message[BUFFER_SIZE], id[BUFFER_SIZE], delid[BUFFER_SIZE];
+    sscanf(buff, "%s %s", instruction, id);
+    redisReply *reply = redisCommand(user_DB, "LRANGE %s_mail_list 0 -1", client->name);
+    if (reply->type == REDIS_REPLY_ARRAY && reply->elements > 0)
+    {
+        for (int i = 0; i < reply->elements; i++)
+        {
+            sscanf(reply->element[i]->str, "%s", delid);
+            if (!strcmp(id, delid))
+            {
+                strcpy(delete_message, reply->element[i]->str);
+                freeReplyObject(reply);
+                break;
+            }
+        }
+        reply = redisCommand(user_DB, "LREM %s_mail_list 0 %s", client->name, delete_message);
+        if (reply->integer > 0)
+            write(client->socketfd, "Delete accept !\n", strlen("Delete accept !\n"));
+        else
+            write(client->socketfd, "Mail id unexist !\n", strlen("Mail id unexist !\n"));
+        freeReplyObject(reply);
+    }
     return;
 }

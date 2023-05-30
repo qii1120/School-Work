@@ -124,3 +124,12 @@ int is_mail_command(char *command);
 void list_mail(char *buff, Client *client, redisContext *user_DB);
 void mail_to(List *numberPipe, char *buff, Client *client, redisContext *user_DB);
 void delete_mail(char *buff, Client *client, redisContext *user_DB);
+
+
+void gyell(char *buff, Client *client, redisContext *user_DB);
+void createGroup(char *buff, Client *client, redisContext *user_DB);
+void delGroup(char *buff, Client *client, redisContext *user_DB);
+void addTo(char *buff, Client *client, redisContext *user_DB);
+void leaveGroup(char *buff, Client *client, redisContext *user_DB);
+void remove_user(char *buff, Client *client, redisContext *user_DB);
+void listGroup(char *buff, Client *client, redisContext *user_DB);

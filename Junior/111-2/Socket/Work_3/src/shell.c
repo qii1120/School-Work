@@ -137,6 +137,13 @@ again:
             deductCount(numberPipe);
             goto again;
         }
+        if (is_group_command(str))
+        {
+            // printf("%s\n", str);
+            group_serve(buff, client, user_DB);
+            deductCount(numberPipe);
+            goto again;
+        }
         // printenv
         if ((sscanf(buff, "%s %s", str, path) == 2) && (strcmp(str, "printenv") == 0))
         {

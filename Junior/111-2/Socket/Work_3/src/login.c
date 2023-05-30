@@ -3,15 +3,15 @@
 char *user_register(int fd, redisContext *user_DB)
 {
     redisReply *reply = 0;
-    char name[BUFFER_SIZE], password[BUFFER_SIZE];
+    char name[BUFFER_SIZE], password[BUFFER_SIZE], buf[BUFFER_SIZE];
 
     write(fd, "your user name: ", strlen("your user name: "));
-    read(fd, name, BUFFER_SIZE);
+    read(fd, buf, BUFFER_SIZE);
+    sscanf(buf, "%s", name);
     write(fd, "your password: ", strlen("your password: "));
-    read(fd, password, BUFFER_SIZE);
+    read(fd, buf, BUFFER_SIZE);
+    sscanf(buf, "%s", password);
 
-    int name_len = strlen(name), password_len = strlen(password);
-    name[name_len-2] = '\0', password[password_len-2] = '\0';
     reply = redisCommand(user_DB, "GET %s", name);
     if (reply != NULL && reply->type == REDIS_REPLY_STRING){
         write(fd, "Username already exist !\n", strlen("Username already exist !\n"));

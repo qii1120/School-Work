@@ -28,14 +28,14 @@ int main(int argc, char *argv[])
     struct epoll_event events[BACKLOG];
     add_event(epfd, listenfd);
 
-    redisContext *user_DB = redisConnect("127.0.0.1", 6379); //default port
-    if (user_DB != NULL && user_DB->err){
+    redisContext *user_DB = redisConnect("127.0.0.1", 6379); // default port
+    if (user_DB != NULL && user_DB->err)
+    {
         printf("Error: %s\n", user_DB->errstr);
         return;
     }
     else
         printf("Connected to Redis\n");
-
 
     while (1)
     {
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
                 }
 
                 char *name = login(client[i].socketfd, user_DB);
-                printf("%s\n", name);
+                // printf("%s\n", name);
                 strcpy(client[i].name, name);
                 pid_t childpid;
                 if ((childpid = fork()) == 0)
@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
                 char command[BUFFER_SIZE];
                 char temp[BUFFER_SIZE];
                 char id[BUFFER_SIZE];
+                char name[BUFFER_SIZE];
                 char tmp_name[BUFFER_SIZE];
                 char someone[BUFFER_SIZE];
                 int n = read(sockfd, buf, BUFFER_SIZE);
@@ -172,6 +173,67 @@ int main(int argc, char *argv[])
                                 }
                             }
                         }
+                    }
+                    else if (sscanf(buf, "%s %s %s %s", command, id, name, someone) == 4 && !strcmp(command, "gyell"))
+                    {
+                        // command, id, user_name, gpname, message
+                        int exist = 0;
+                        char user_name[BUFFER_SIZE];
+                        strcpy(tmp_name, buf + 4 + strlen(name) + strlen(command) + strlen(id) + strlen(someone));
+                        sprintf(buf, "<%s-%s>: %s\n", someone, name, tmp_name);
+
+                        redisReply *reply = redisCommand(user_DB, "LRANGE %s_group 0 -1", someone);
+                        if (reply->type == REDIS_REPLY_ARRAY && reply->elements > 0)
+                        {
+                            // printf("%d\n", reply->elements);
+                            for (int x = 0; x < reply->elements; x++)
+                            {
+                                strcpy(user_name, reply->element[x]->str);
+                                for (int k = 0; k < BACKLOG; k++)
+                                {
+                                    // printf("%s %s %s\n", name, user_name, client[k].name);
+                                    if (client[k].exist && !strcmp(client[k].name, name) && !strcmp(client[k].name, user_name))
+                                    {
+                                        int fd = open(id, O_WRONLY);
+                                        if (fd < 0)
+                                            perror("open error");
+                                        write(fd, buf, strlen(buf));
+                                        close(fd);
+                                        exist = 1;
+                                        break;
+                                    }
+                                    else if (client[k].exist && !strcmp(client[k].name, user_name) && strcmp(client[k].name, name))
+                                    {
+                                        int nn = write(client[k].socketfd, buf, strlen(buf));
+                                        char tmp[BUFFER_SIZE];
+                                        sprintf(tmp, "(%s)%% ", client[k].name);
+                                        write(client[k].socketfd, tmp, strlen(tmp));
+                                        if (nn < 0)
+                                        {
+                                            perror("write");
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!exist)
+                            {
+                                int fd = open(id, O_WRONLY);
+                                if (fd < 0)
+                                    perror("open error");
+                                write(fd, "You are not in the group !\n", strlen("You are not in the group !\n"));
+                                close(fd);
+                            }
+                        }
+                        else if (reply->elements <= 0)
+                        {
+                            int fd = open(id, O_WRONLY);
+                            if (fd < 0)
+                                perror("open error");
+                            write(fd, "Group not found !\n", strlen("Group not found !\n"));
+                            close(fd);
+                        }
+                        freeReplyObject(reply);
                     }
                     else if (sscanf(buf, "%s %s %s", id, command, someone) == 3 && !strcmp(command, "tell"))
                     {
