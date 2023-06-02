@@ -16,7 +16,7 @@ _min_stack      = 0x2000;   /* 8K - minimum stack space to reserve */
 _stack_len     = LENGTH(stack);
 _stack_start   = ORIGIN(stack) + LENGTH(stack);
 
-_entry_point = _vectors_start + 0x80;
+_entry_point = _vectors_start + 0x84;
 ENTRY(_entry_point)
 
 

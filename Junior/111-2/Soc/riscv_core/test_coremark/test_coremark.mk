@@ -26,7 +26,7 @@ CRT ?= $(COMMON_DIR)/crt0.S
 CFLAGS ?= -march=$(ARCH) -mabi=ilp32 -static -mcmodel=medany -Wall -O2\
 	-fvisibility=hidden -nostdlib -nostartfiles -ffreestanding $(PROGRAM_CFLAGS)
 
-OBJS := ${C_SRCS:.c=.o} ${ASM_SRCS:.S=.o} ${CRT:.S=.o}
+OBJS := ${CRT:.S=.o} ${ASM_SRCS:.S=.o} ${C_SRCS:.c=.o}
 DEPS = $(OBJS:%.o=%.d)
 
 ifdef PROGRAM

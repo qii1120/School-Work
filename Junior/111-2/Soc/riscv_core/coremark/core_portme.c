@@ -18,6 +18,7 @@ Original Author: Shay Gal-on
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "coremark.h"
 
 

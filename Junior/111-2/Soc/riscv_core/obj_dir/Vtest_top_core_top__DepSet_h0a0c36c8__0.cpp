@@ -4511,7 +4511,7 @@ VL_INLINE_OPT void Vtest_top_core_top___nba_sequent__TOP__test_top__core_top0__0
                                 | (IData)(vlSelf->__PVT__int_ctrl_interrupt_en_o))
                                 ? vlSelf->__PVT__ctrl_new_pc_o
                                 : ((IData)(4U) + vlSelf->__PVT__pc_wire)))
-                        : 0x80U);
+                        : 0x84U);
     if (((0U == (IData)(vlSelf->__PVT__exe0__DOT__div0__DOT__S)) 
          & (IData)(vlSelf->__PVT__exe0__DOT__div_req_o))) {
         if ((0U != vlSelf->__PVT__exe0__DOT__b_o)) {
