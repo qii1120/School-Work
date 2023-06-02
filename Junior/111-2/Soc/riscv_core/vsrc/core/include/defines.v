@@ -11,6 +11,8 @@
 `define RAM_ADDR_WIDTH 32
 `define CSR_ADDR_WIDTH 12
 
+`define REBOOT_ADDR 32'h80
+
 `define ZERO        32'h0
 `define ONE         32'h00000001
 `define ZERO_REG    0

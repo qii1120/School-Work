@@ -22,7 +22,7 @@ module pc_reg(
 
     always @(posedge clk_i)  begin
         if (ce_o == 1'b0) begin
-            pc_o <= 32'h0;
+            pc_o <= `REBOOT_ADDR;
         end else if (stall_i[0]==`STOP) begin
             pc_o <= pc_o;  //loop
         end else if (flush_jump_i || flush_int_i) begin
