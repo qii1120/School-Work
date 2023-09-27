@@ -37,6 +37,8 @@ int main(int argc,char **argv)
 {
     Verilated::commandArgs(argc,argv);
     Verilated::traceEverOn(true); 
+    FILE *fptr;
+    fptr = fopen("logout.txt","w");
 
     if (argc < 2) {
         printf("Please provide riscv test elf file\n");
@@ -68,7 +70,14 @@ int main(int argc,char **argv)
         int x = top->halt_o;
         if (x==1)
             break;
-        //printf("halt=%d\n", x);
+        for (int i = 0; i < 32; i++)
+        {
+            int x = sim_regs_read(top->test_top->core_top0->regfile0, i);
+            fprintf(fptr, " x%02d = %08x% --  ", i, x);
+            if (i % 4 == 3)
+                fprintf(fptr, "\n");
+        }
+        fprintf(fptr, "\n");
     }
 
     if (isa_test==1) {
@@ -81,6 +90,7 @@ int main(int argc,char **argv)
      top->final();
      tfp->close();
      delete top;
+     fclose(fptr);
      return 0;
 }
 

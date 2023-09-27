@@ -23,8 +23,8 @@ OBJDUMP ?= $(subst gcc,objdump,$(wordlist 1,1,$(CC)))
 
 LINKER_SCRIPT ?= $(COMMON_DIR)/link.ld
 CRT ?= $(COMMON_DIR)/crt0.S
-CFLAGS ?= -march=$(ARCH) -mabi=ilp32 -static -mcmodel=medany -Wall -O2\
-	-fvisibility=hidden -nostdlib -nostartfiles -ffreestanding $(PROGRAM_CFLAGS)
+CFLAGS ?= -march=$(ARCH) -mabi=ilp32 -static -mcmodel=medany -Wall -O1\
+	-fvisibility=hidden -ffreestanding -nostdlib -nostartfiles $(PROGRAM_CFLAGS)
 
 OBJS := ${CRT:.S=.o} ${ASM_SRCS:.S=.o} ${C_SRCS:.c=.o}
 DEPS = $(OBJS:%.o=%.d)

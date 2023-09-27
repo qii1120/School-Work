@@ -11,7 +11,7 @@ _min_stack      = 0x2000;   /* 8K - minimum stack space to reserve */
 _stack_len     = LENGTH(stack);
 _stack_start   = ORIGIN(stack) + LENGTH(stack);
 
-ENTRY(_start+0x80)
+ENTRY(_start+0x00)
 
 
 SECTIONS
